@@ -1,0 +1,62 @@
+; terminal 1: ros2 launch plansys2_bringup plansys2_bringup_launch_distributed.py model_file:=/home/adrianco/Desktop/Planificacion_y_sistemas_cognitivos/p1_ws/src/plansys2-gpsr-tayros2/pddl/house_granny_domain.pddl
+; terminal 2: ros2 run plansys2_terminal plansys2_terminal
+
+set instance tay robot
+set instance garage room
+set instance bathroom room
+set instance bedroom room
+set instance kitchen room
+set instance living_room room
+
+set instance doorA door
+set instance doorB door
+set instance doorC door
+set instance doorD door
+
+set instance tools util
+set instance clothes util
+set instance silverware util
+set instance towel util
+
+set instance robot_gripper gripper
+
+set instance granny human
+
+; Robot at living room and granny in bedroom:
+set predicate (robot_at tay living_room)
+set predicate (human_at granny bedroom)
+
+; Robot's only gripper is free:
+set predicate (gripper_at robot_gripper tay)
+set predicate (gripper_free robot_gripper)
+
+; Objests are in no corresponding rooms at the start:
+set predicate (object_at tools kitchen)
+set predicate (object_at clothes living_room)
+set predicate (object_at silverware living_room)
+set predicate (object_at towel garage)
+
+; Declare map (Using "home" gazebo's map edited):
+set predicate (connected_by_door kitchen bathroom doorA)
+set predicate (connected_by_door bathroom kitchen doorA)
+set predicate (connected_by_door kitchen bedroom doorB)
+set predicate (connected_by_door bedroom kitchen doorB)
+set predicate (connected_by_door living_room garage doorC)
+set predicate (connected_by_door garage living_room doorC)
+set predicate (connected_by_door bedroom garage doorD)
+set predicate (connected_by_door garage bedroom doorD)
+set predicate (connected kitchen living_room)
+set predicate (connected living_room kitchen)
+
+; All doors are closed:
+set predicate (open doorA)
+set predicate (close doorB)
+set predicate (close doorC)
+set predicate (close doorD)
+
+set predicate (pick_request granny tools)
+
+;Objects must be in their corresponding room:
+; Human (in this case, granny) must be attended:
+
+set goal (and (move_object clothes bedroom)(move_object tools garage)(move_object towel bathroom)(move_object silverware kitchen)(human_attended granny))
