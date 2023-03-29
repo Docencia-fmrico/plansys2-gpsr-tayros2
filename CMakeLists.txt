@@ -48,6 +48,14 @@ list(APPEND plugin_libs plansys2_closegripper_bt_node)
 
 add_library(plansys2_opengripper_bt_node SHARED src/behavior_tree_nodes/OpenGripper.cpp)
 list(APPEND plugin_libs plansys2_opengripper_bt_node)
+add_library(plansys2_movebydoor_bt_node SHARED src/behavior_tree_nodes/MoveByDoor.cpp)
+list(APPEND plugin_libs plansys2_movebydoor_bt_node)
+
+add_library(plansys2_opendoor_bt_node SHARED src/behavior_tree_nodes/OpenDoor.cpp)
+list(APPEND plugin_libs plansys2_opendoor_bt_node)
+
+add_library(plansys2_pick_bt_node SHARED src/behavior_tree_nodes/Pick.cpp)
+list(APPEND plugin_libs plansys2_pick_bt_node)
 
 foreach(bt_plugin ${plugin_libs})
   ament_target_dependencies(${bt_plugin} ${dependencies})
