@@ -15,11 +15,11 @@
 #include <string>
 #include <iostream>
 
-#include "plansys2_bt_example/behavior_tree_nodes/CloseGripper.hpp"
+#include "plansys2-gpsr-tayros2/behavior_tree_nodes/CloseGripper.hpp"
 
 #include "behaviortree_cpp_v3/behavior_tree.h"
 
-namespace plansys2_bt_example
+namespace plansys2_gpsr_tayros2
 {
 
 CloseGripper::CloseGripper(
@@ -48,10 +48,10 @@ CloseGripper::tick()
   }
 }
 
-}  // namespace plansys2_bt_example
+}  // namespace plansys2_gpsr_tayros2
 
 #include "behaviortree_cpp_v3/bt_factory.h"
 BT_REGISTER_NODES(factory)
 {
-  factory.registerNodeType<plansys2_bt_example::CloseGripper>("CloseGripper");
+  factory.registerNodeType<plansys2_gpsr_tayros2::CloseGripper>("CloseGripper");
 }

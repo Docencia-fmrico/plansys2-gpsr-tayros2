@@ -15,14 +15,14 @@
 #include <string>
 #include <iostream>
 
-#include "plansys2_bt_example/behavior_tree_nodes/OpenGripper.hpp"
+#include "plansys2-gpsr-tayros2/behavior_tree_nodes/CloseDoor.hpp"
 
 #include "behaviortree_cpp_v3/behavior_tree.h"
 
-namespace plansys2_bt_example
+namespace plansys2_gpsr_tayros2
 {
 
-OpenGripper::OpenGripper(
+CloseDoor::CloseDoor(
   const std::string & xml_tag_name,
   const BT::NodeConfiguration & conf)
 : BT::ActionNodeBase(xml_tag_name, conf), counter_(0)
@@ -30,15 +30,15 @@ OpenGripper::OpenGripper(
 }
 
 void
-OpenGripper::halt()
+CloseDoor::halt()
 {
-  std::cout << "OpenGripper halt" << std::endl;
+  std::cout << "CloseGripper halt" << std::endl;
 }
 
 BT::NodeStatus
-OpenGripper::tick()
+CloseDoor::tick()
 {
-  std::cout << "OpenGripper tick " << counter_ << std::endl;
+  std::cout << "CloseDoor tick " << counter_ << std::endl;
 
   if (counter_++ < 5) {
     return BT::NodeStatus::RUNNING;
@@ -48,10 +48,10 @@ OpenGripper::tick()
   }
 }
 
-}  // namespace plansys2_bt_example
+}  // namespace plansys2_gpsr_tayros2
 
 #include "behaviortree_cpp_v3/bt_factory.h"
 BT_REGISTER_NODES(factory)
 {
-  factory.registerNodeType<plansys2_bt_example::OpenGripper>("OpenGripper");
+  factory.registerNodeType<plansys2_gpsr_tayros2::CloseDoor>("CloseDoor");
 }
