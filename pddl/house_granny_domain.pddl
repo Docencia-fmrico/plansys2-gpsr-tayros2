@@ -1,5 +1,5 @@
 (define (domain robots-granny-house)
-  (:requirements :typing :fluents :durative-actions :universal-preconditions :conditional-effects)
+  (:requirements :typing :fluents :durative-actions :universal-preconditions :conditional-effects :continuous-effects)
 
   (:types
     room corridor - location
@@ -15,8 +15,8 @@
     (gripper_free ?g - gripper)
     (gripper_at ?g - gripper ?r - robot)
     (robot_carry ?r - robot ?g - gripper ?u - util)
-    (connected ?l1 ?l2 - location)
     (connected_by_door ?l1 ?l2 - location ?d - door)
+    (connected ?l1 ?l2 - location)
     (open ?d - door)
     (close ?d - door)
 
@@ -38,8 +38,8 @@
       (at start(connected_by_door ?l1 ?l2 ?d))
     )
     :effect (and
+      (at start(not (close ?d)))
       (at end(open ?d))
-      (at end(not (close ?d)))
     )
   )
 
@@ -52,36 +52,36 @@
       (at start(connected_by_door ?l1 ?l2 ?d))
     )
     :effect (and
+      (at start(not (open ?d)))
       (at end(close ?d))
-      (at end(not (open ?d)))
     )
   )
 
   ; acciones instantaneas ya que sino atraviesa a la vez una habitacion
   ; con puerta y una sin puerta estando en 2 sitios distintos a la vez
-  (:action move_by_door
+  (:durative-action move_by_door
     :parameters (?r - robot ?from ?to - location ?d - door)
-    :precondition (and
-      (robot_at ?r ?from)
-      (connected_by_door ?from ?to ?d)
+    :duration ( = ?duration 5)
+    :condition (and
+      (at start(robot_at ?r ?from))
+      (at start(connected_by_door ?from ?to ?d))
     )
     :effect (and
-      (not (robot_at ?r ?from))
-      (robot_at ?r ?to)
+      (at start(not (robot_at ?r ?from)))
+      (at end(robot_at ?r ?to))
     )
   )
 
-  ; acciones instantaneas ya que sino atraviesa a la vez una habitacion
-  ; con puerta y una sin puerta estando en 2 sitios distintos a la vez
-  (:action move_without_door
+  (:durative-action move_without_door
     :parameters (?r - robot ?from ?to - location)
-    :precondition (and
-      (robot_at ?r ?from)
-      (connected ?from ?to)
+    :duration ( = ?duration 5)
+    :condition (and
+      (at start(robot_at ?r ?from))
+      (at start(connected ?from ?to))
     )
     :effect (and
-      (not (robot_at ?r ?from))
-      (robot_at ?r ?to)
+      (at start(not (robot_at ?r ?from)))
+      (at end(robot_at ?r ?to))
     )
   )
 
@@ -89,11 +89,11 @@
     :parameters (?u - util ?l - location ?r - robot ?g - gripper)
     :duration (= ?duration 1)
     :condition (and
-      (at start(no_prio_task_remaining))
       (at start(gripper_at ?g ?r))
       (at start(object_at ?u ?l))
-      (at start(robot_at ?r ?l))
       (at start(gripper_free ?g))
+      (over all(robot_at ?r ?l))
+      (over all(no_prio_task_remaining))
     )
     :effect (and
       ;importantisimo indicar que el gancho deja de estar libre cuand empieza la accion
@@ -109,9 +109,9 @@
     :condition (and
       (at start(gripper_at ?g ?r))
       (at start(object_at ?u ?l))
-      (at start(robot_at ?r ?l))
       (at start(gripper_free ?g))
-      (at start(pick_request ?h ?u))
+      (over all(robot_at ?r ?l))
+      (over all(pick_request ?h ?u))
     )
     :effect (and
       ;importe indicar que el gancho deja de estar libre cuando empieza la acción
@@ -128,13 +128,13 @@
     :duration (= ?duration 1)
     :condition (and
       (at start(gripper_at ?g ?r))
-      (at start(robot_at ?r ?l))
       (at start(robot_carry ?r ?g ?u))
+      (over all(robot_at ?r ?l))
     )
     :effect (and
+      (at start(not (robot_carry ?r ?g ?u)))
       (at end(gripper_free ?g))
       (at end(object_at ?u ?l))
-      (at end(not (robot_carry ?r ?g ?u)))
     )
   )
 
