@@ -1,5 +1,5 @@
 (define (domain robots-granny-house)
-  (:requirements :typing :fluents :durative-actions :universal-preconditions :conditional-effects :continuous-effects)
+  (:requirements :typing :fluents :durative-actions :universal-preconditions :conditional-effects)
 
   (:types
     room corridor - location
