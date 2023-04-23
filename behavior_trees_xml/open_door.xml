@@ -1,0 +1,7 @@
+<root main_tree_to_execute = "MainTree" >
+    <BehaviorTree ID="MainTree">
+       <Sequence name="root_sequence">
+           <OpenDoor    name="open_door"/>
+       </Sequence>
+    </BehaviorTree>
+</root>
