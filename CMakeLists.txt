@@ -6,7 +6,13 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
 find_package(plansys2_msgs REQUIRED)
+find_package(plansys2_domain_expert REQUIRED)
 find_package(plansys2_executor REQUIRED)
+find_package(plansys2_planner REQUIRED)
+find_package(plansys2_problem_expert REQUIRED)
+find_package(plansys2_pddl_parser REQUIRED)
+find_package(ament_index_cpp REQUIRED)
+find_package(plansys2_bt_actions REQUIRED)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -14,24 +20,54 @@ set(dependencies
     rclcpp
     rclcpp_action
     plansys2_msgs
+    plansys2_domain_expert
     plansys2_executor
+    plansys2_planner
+    plansys2_problem_expert
+    plansys2_pddl_parser
+    ament_index_cpp
+    plansys2_bt_actions
 )
 
-add_executable(move_action_node src/move_action_node.cpp)
-ament_target_dependencies(move_action_node ${dependencies})
+include_directories(include)
 
-add_executable(charge_action_node src/charge_action_node.cpp)
-ament_target_dependencies(charge_action_node ${dependencies})
+add_executable(close_door_action_node src/close_door_action_node.cpp)
+ament_target_dependencies(close_door_action_node ${dependencies})
 
-add_executable(ask_charge_action_node src/ask_charge_action_node.cpp)
-ament_target_dependencies(ask_charge_action_node ${dependencies})
+add_executable(drop_action_node src/drop_action_node.cpp)
+ament_target_dependencies(drop_action_node ${dependencies})
+
+add_executable(pick_prio_action_node src/pick_prio_action_node.cpp)
+ament_target_dependencies(pick_prio_action_node ${dependencies})
+
+add_library(plansys2_closedoor_bt_node SHARED src/behavior_tree_nodes/CloseDoor.cpp)
+list(APPEND plugin_libs plansys2_closedoor_bt_node)
+
+add_library(plansys2_closegripper_bt_node SHARED src/behavior_tree_nodes/CloseGripper.cpp)
+list(APPEND plugin_libs plansys2_closegripper_bt_node)
+
+add_library(plansys2_opengripper_bt_node SHARED src/behavior_tree_nodes/OpenGripper.cpp)
+list(APPEND plugin_libs plansys2_opengripper_bt_node)
+add_library(plansys2_movebydoor_bt_node SHARED src/behavior_tree_nodes/MoveByDoor.cpp)
+list(APPEND plugin_libs plansys2_movebydoor_bt_node)
+
+add_library(plansys2_opendoor_bt_node SHARED src/behavior_tree_nodes/OpenDoor.cpp)
+list(APPEND plugin_libs plansys2_opendoor_bt_node)
+
+add_library(plansys2_pick_bt_node SHARED src/behavior_tree_nodes/Pick.cpp)
+list(APPEND plugin_libs plansys2_pick_bt_node)
+
+foreach(bt_plugin ${plugin_libs})
+  ament_target_dependencies(${bt_plugin} ${dependencies})
+  target_compile_definitions(${bt_plugin} PRIVATE BT_PLUGIN_EXPORT)
+endforeach()
 
 install(DIRECTORY launch pddl DESTINATION share/${PROJECT_NAME})
 
 install(TARGETS
-  move_action_node
-  charge_action_node
-  ask_charge_action_node
+  close_door_action_node
+  pick_prio_action_node
+  drop_action_node
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME}
@@ -47,3 +83,4 @@ endif()
 ament_export_dependencies(${dependencies})
 
 ament_package()
+

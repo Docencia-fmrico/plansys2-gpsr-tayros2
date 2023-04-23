@@ -1,4 +1,5 @@
 (define (domain robots-granny-house)
+
   (:requirements :typing :fluents :durative-actions :universal-preconditions :conditional-effects)
 
   (:types
@@ -19,7 +20,6 @@
     (connected ?l1 ?l2 - location)
     (open ?d - door)
     (close ?d - door)
-
     (human_attended ?h - human)
     (close_door_request ?h - human ?d - door)
     (open_door_request ?h - human ?d - door)
