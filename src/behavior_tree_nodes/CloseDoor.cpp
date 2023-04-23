@@ -15,7 +15,7 @@
 #include <string>
 #include <iostream>
 
-#include "plansys2-gpsr-tayros2/behavior_tree_nodes/CloseDoor.hpp"
+#include "plansys2_gpsr_tayros2/behavior_tree_nodes/CloseDoor.hpp"
 
 #include "behaviortree_cpp_v3/behavior_tree.h"
 
