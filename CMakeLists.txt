@@ -68,7 +68,6 @@ install(TARGETS
   close_door_action_node
   pick_prio_action_node
   drop_action_node
-
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME}
@@ -84,3 +83,4 @@ endif()
 ament_export_dependencies(${dependencies})
 
 ament_package()
+
