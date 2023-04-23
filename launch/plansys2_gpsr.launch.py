@@ -52,29 +52,29 @@ def generate_launch_description():
         output='screen',
         parameters=[])
 
-    open_door_cmd = Node(
-        package='plansys2_gpsr_tayros2',
-        executable='open_door_action_node',
-        name='open_door_action_node',
-        namespace=namespace,
-        output='screen',
-        parameters=[])
+    # open_door_cmd = Node(
+    #     package='plansys2_gpsr_tayros2',
+    #     executable='open_door_action_node',
+    #     name='open_door_action_node',
+    #     namespace=namespace,
+    #     output='screen',
+    #     parameters=[])
 
-    move_by_door_cmd = Node(
-        package='plansys2_gpsr_tayros2',
-        executable='move_by_door_action_node',
-        name='move_by_door_action_node',
-        namespace=namespace,
-        output='screen',
-        parameters=[])
+    # move_by_door_cmd = Node(
+    #     package='plansys2_gpsr_tayros2',
+    #     executable='move_by_door_action_node',
+    #     name='move_by_door_action_node',
+    #     namespace=namespace,
+    #     output='screen',
+    #     parameters=[])
     
-    pick_cmd = Node(
-        package='plansys2_gpsr_tayros2',
-        executable='pick_action_node',
-        name='pick_action_node',
-        namespace=namespace,
-        output='screen',
-        parameters=[])
+    # pick_cmd = Node(
+    #     package='plansys2_gpsr_tayros2',
+    #     executable='pick_action_node',
+    #     name='pick_action_node',
+    #     namespace=namespace,
+    #     output='screen',
+    #     parameters=[])
     
     pick_prio_cmd = Node(
         package='plansys2_gpsr_tayros2',
@@ -93,17 +93,24 @@ def generate_launch_description():
         parameters=[])
     ld = LaunchDescription()
 
+    move_cmd = Node(
+        package='plansys2_gpsr_tayros2',
+        executable='move_action_node',
+        name='move_action_node',
+        output='screen',
+        parameters=[])
+
     ld.add_action(declare_namespace_cmd)
 
     # Declare the launch options
     ld.add_action(plansys2_cmd)
-
     ld.add_action(close_door_cmd)
-    ld.add_action(open_door_cmd)
-    ld.add_action(move_by_door_cmd)
-    ld.add_action(pick_cmd)
+    # ld.add_action(open_door_cmd)
+    # ld.add_action(move_by_door_cmd)
+    # ld.add_action(pick_cmd)
     ld.add_action(pick_prio_cmd)
     ld.add_action(drop_cmd)
+    ld.add_action(move_cmd)
 
 
     return ld
