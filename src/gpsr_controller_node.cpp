@@ -63,7 +63,7 @@ public:
     problem_expert_->addInstance(plansys2::Instance{"robot_gripper", "gripper"});
     problem_expert_->addInstance(plansys2::Instance{"granny", "human"});
 
-    problem_expert_->addPredicate(plansys2::Predicate("(robot_at tay living_room)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(robot_at tay kitchen)"));
     problem_expert_->addPredicate(plansys2::Predicate("(human_at granny bedroom)"));
     problem_expert_->addPredicate(plansys2::Predicate("(gripper_at robot_gripper tay)"));
     problem_expert_->addPredicate(plansys2::Predicate("(gripper_free robot_gripper)"));
