@@ -62,12 +62,16 @@ foreach(bt_plugin ${plugin_libs})
   target_compile_definitions(${bt_plugin} PRIVATE BT_PLUGIN_EXPORT)
 endforeach()
 
+add_executable(gpsr_controller_node src/gpsr_controller_node.cpp)
+ament_target_dependencies(gpsr_controller_node ${dependencies})
+
 install(DIRECTORY launch pddl DESTINATION share/${PROJECT_NAME})
 
 install(TARGETS
   close_door_action_node
   pick_prio_action_node
   drop_action_node
+  gpsr_controller_node
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME}
