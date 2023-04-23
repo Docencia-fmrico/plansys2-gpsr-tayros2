@@ -52,13 +52,13 @@ def generate_launch_description():
         output='screen',
         parameters=[])
 
-    # open_door_cmd = Node(
-    #     package='plansys2_gpsr_tayros2',
-    #     executable='open_door_action_node',
-    #     name='open_door_action_node',
-    #     namespace=namespace,
-    #     output='screen',
-    #     parameters=[])
+    #open_door_cmd = Node(
+    #    package='plansys2_gpsr_tayros2',
+    #    executable='open_door_action_node',
+    #    name='open_door_action_node',
+    #    namespace=namespace,
+    #    output='screen',
+    #    parameters=[])
 
     # move_by_door_cmd = Node(
     #     package='plansys2_gpsr_tayros2',
@@ -76,30 +76,79 @@ def generate_launch_description():
     #     output='screen',
     #     parameters=[])
     
-    pick_prio_cmd = Node(
-        package='plansys2_gpsr_tayros2',
-        executable='pick_prio_action_node',
-        name='pick_prio_action_node',
-        namespace=namespace,
-        output='screen',
-        parameters=[])
+    #pick_prio_cmd = Node(
+    #    package='plansys2_gpsr_tayros2',
+    #    executable='pick_prio_action_node',
+    #    name='pick_prio_action_node',
+    #    namespace=namespace,
+    #    output='screen',
+    #    parameters=[])
     
-    drop_cmd = Node(
+    #drop_cmd = Node(
+    #    package='plansys2_gpsr_tayros2',
+    #    executable='drop_action_node',
+    #    name='drop_action_node',
+    #    namespace=namespace,
+    #    output='screen',
+    #    parameters=[])
+
+    # Both are the same action but 1 has to be done first
+    transport_cmd = Node(
         package='plansys2_gpsr_tayros2',
-        executable='drop_action_node',
-        name='drop_action_node',
+        executable='bt_action_node',
+        name='transport',
         namespace=namespace,
         output='screen',
-        parameters=[])
-    ld = LaunchDescription()
+        parameters=[
+          example_dir + '/config/params.yaml',
+          {
+            'action_name': 'transport',
+            'publisher_port': 1674,
+            'server_port': 1675,
+            'bt_xml_file': example_dir + '/behavior_trees_xml/transport.xml'
+          }
+        ])
+
+    transport_prio_cmd = Node(
+        package='plansys2_gpsr_tayros2',
+        executable='bt_action_node',
+        name='transport_prio',
+        namespace=namespace,
+        output='screen',
+        parameters=[
+          example_dir + '/config/params.yaml',
+          {
+            'action_name': 'transport_prio',
+            'publisher_port': 1674,
+            'server_port': 1675,
+            'bt_xml_file': example_dir + '/behavior_trees_xml/transport.xml'
+          }
+        ])
+    
+    # move_cmd = Node(
+    #    package='plansys2_gpsr_tayros2',
+    #    executable='move_action_node',
+    #    name='move_action_node',
+    #    output='screen',
+    #    parameters=[])
 
     move_cmd = Node(
         package='plansys2_gpsr_tayros2',
-        executable='move_action_node',
-        name='move_action_node',
+        executable='bt_action_node',
+        name='move',
+        namespace=namespace,
         output='screen',
-        parameters=[])
+        parameters=[
+          example_dir + '/config/params.yaml',
+          {
+            'action_name': 'move',
+            'publisher_port': 1672,
+            'server_port': 1673,
+            'bt_xml_file': example_dir + '/behavior_trees_xml/move.xml'
+          }
+        ])   
 
+    ld = LaunchDescription()
     ld.add_action(declare_namespace_cmd)
 
     # Declare the launch options
@@ -108,9 +157,12 @@ def generate_launch_description():
     # ld.add_action(open_door_cmd)
     # ld.add_action(move_by_door_cmd)
     # ld.add_action(pick_cmd)
-    ld.add_action(pick_prio_cmd)
-    ld.add_action(drop_cmd)
+    # ld.add_action(pick_prio_cmd)
+    # ld.add_action(drop_cmd)
     ld.add_action(move_cmd)
+
+    ld.add_action(transport_cmd)
+    ld.add_action(transport_prio_cmd)
 
 
     return ld

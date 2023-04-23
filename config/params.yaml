@@ -1,0 +1,11 @@
+ move:
+  ros__parameters:
+    plugins:
+      - plansys2_move_bt_node
+
+transport:
+  ros__parameters:
+    plugins:
+      - plansys2_close_gripper_bt_node
+      - plansys2_open_gripper_bt_node
+      - plansys2_move_bt_node
