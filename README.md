@@ -20,6 +20,7 @@
 ## Table of Contents
 - [Table of Contents](#table-of-contents)
 - [Project Goal](#project-goal)
+- [PDDL](#pddl)
 - [Logic and functionality](#logic-and-functionality)
 - [Behavior Tree diagrams](#behavior-tree-diagram)
 - [Launcher](#launcher)
@@ -28,6 +29,8 @@
 - [Licencia](#licencia)
 
 ## Project Goal
+
+## PDDL
 
 
 ## Logic and functionality
