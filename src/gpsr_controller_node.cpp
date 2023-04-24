@@ -35,6 +35,7 @@ public:
   {
   }
 
+
   void init()
   {
     domain_expert_ = std::make_shared<plansys2::DomainExpertClient>();
