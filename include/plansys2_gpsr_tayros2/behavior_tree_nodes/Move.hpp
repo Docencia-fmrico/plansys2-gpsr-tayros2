@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef PLANSYS2_BT_EXAMPLE__BEHAVIOR_TREE_NODES__MOVE_HPP_
-#define PLANSYS2_BT_EXAMPLE__BEHAVIOR_TREE_NODES__MOVE_HPP_
+#ifndef PLANSYS2_GPSR_TAYROS2__BEHAVIOR_TREE_NODES__MOVE_HPP_
+#define PLANSYS2_GPSR_TAYROS2__BEHAVIOR_TREE_NODES__MOVE_HPP_
 
 #include <string>
 #include <map>
@@ -25,7 +25,7 @@
 #include "behaviortree_cpp_v3/behavior_tree.h"
 #include "behaviortree_cpp_v3/bt_factory.h"
 
-namespace plansys2_bt_tests
+namespace plansys2_gpsr_tayros2
 {
 
 class Move : public plansys2::BtActionNode<
@@ -52,6 +52,6 @@ private:
   std::map<std::string, geometry_msgs::msg::Pose2D> waypoints_;
 };
 
-}  // namespace plansys2_bt_tests
+}  // namespace plansys2_gpsr_tayros2
 
-#endif  // PLANSYS2_BT_EXAMPLE__BEHAVIOR_TREE_NODES__MOVE_HPP_
+#endif  // PLANSYS2_GPSR_TAYROS2__BEHAVIOR_TREE_NODES__MOVE_HPP_
