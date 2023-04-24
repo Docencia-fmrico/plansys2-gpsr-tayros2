@@ -2,7 +2,7 @@
     <BehaviorTree ID="MainTree">
        <Sequence name="root_sequence">
            <OpenDoor name="open_door"/>
-           <Move    name="move" goal="${arg2}"/>
+           <Move    name="move" goal="${arg5}"/>
        </Sequence>
     </BehaviorTree>
 </root>

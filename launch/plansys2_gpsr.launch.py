@@ -44,13 +44,13 @@ def generate_launch_description():
           }.items())
 
     # Specify the actions
-    close_door_cmd = Node(
-        package='plansys2_gpsr_tayros2',
-        executable='close_door_action_node',
-        name='close_door_action_node',
-        namespace=namespace,
-        output='screen',
-        parameters=[])
+#    close_door_cmd = Node(
+#        package='plansys2_gpsr_tayros2',
+#        executable='close_door_action_node',
+#        name='close_door_action_node',
+#        namespace=namespace,
+#        output='screen',
+#        parameters=[])
 
     #open_door_cmd = Node(
     #    package='plansys2_gpsr_tayros2',
@@ -103,7 +103,7 @@ def generate_launch_description():
         parameters=[
             example_dir + '/config/params.yaml',
             {
-            'action_name': 'move_by_door',
+            'action_name': 'move_without_door',
             'publisher_port': 1676,
             'server_port': 1677,
             'bt_xml_file': example_dir + '/behavior_trees_xml/move.xml'
@@ -119,7 +119,7 @@ def generate_launch_description():
         parameters=[
             example_dir + '/config/params.yaml',
             {
-            'action_name': 'move_without_door',
+            'action_name': 'move_by_door',
             'publisher_port': 1678,
             'server_port': 1679,
             'bt_xml_file': example_dir + '/behavior_trees_xml/move_wd.xml'
@@ -135,7 +135,7 @@ def generate_launch_description():
         parameters=[
             example_dir + '/config/params.yaml',
             {
-            'action_name': 'transport',
+            'action_name': 'prio_transport',
             'publisher_port': 1680,
             'server_port': 1681,
             'bt_xml_file': example_dir + '/behavior_trees_xml/transport.xml'
@@ -157,45 +157,14 @@ def generate_launch_description():
             'bt_xml_file': example_dir + '/behavior_trees_xml/transport.xml'
             }
         ])
-    
-    open_door_req_cmd = Node(
-        package='plansys2_bt_actions',
-        executable='bt_action_node',
-        name='open_door_req',
-        namespace=namespace,
-        output='screen',
-        parameters=[
-            example_dir + '/config/params.yaml',
-            {
-            'action_name': 'open_door_req',
-            'publisher_port': 1684,
-            'server_port': 1685,
-            'bt_xml_file': example_dir + '/behavior_trees_xml/open_door_req.xml'
-            }
-        ])
-    
-    close_door_req_cmd = Node(
-        package='plansys2_bt_actions',
-        executable='bt_action_node',
-        name='close_door_req',
-        namespace=namespace,
-        output='screen',
-        parameters=[
-            example_dir + '/config/params.yaml',
-            {
-            'action_name': 'close_door_req',
-            'publisher_port': 1686,
-            'server_port': 1687,
-            'bt_xml_file': example_dir + '/behavior_trees_xml/close_door_req.xml'
-            }
-        ])
+
    
     ld = LaunchDescription()
     ld.add_action(declare_namespace_cmd)
 
     # Declare the launch options
     ld.add_action(plansys2_cmd)
-    ld.add_action(close_door_cmd)
+#    ld.add_action(close_door_cmd)
     # ld.add_action(open_door_cmd)
     # ld.add_action(move_by_door_cmd)
     # ld.add_action(pick_cmd)
@@ -204,11 +173,6 @@ def generate_launch_description():
     ld.add_action(move_without_door_cmd)
     ld.add_action(move_with_door_cmd)
     ld.add_action(transport_cmd)
-
-    ld.add_action(transport_cmd)
     ld.add_action(transport_prio_cmd)
-
-    ld.add_action(close_door_req_cmd)
-    ld.add_action(open_door_req_cmd)
 
     return ld

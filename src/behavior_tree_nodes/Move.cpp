@@ -26,7 +26,7 @@
 
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
 
-namespace plansys2_bt_tests
+namespace plansys2_gpsr_tayros2
 {
 
 Move::Move(
@@ -110,7 +110,7 @@ Move::on_success()
 }
 
 
-}  // namespace plansys2_bt_tests
+}  // namespace plansys2_gpsr_tayros2
 
 #include "behaviortree_cpp_v3/bt_factory.h"
 BT_REGISTER_NODES(factory)
@@ -118,10 +118,10 @@ BT_REGISTER_NODES(factory)
   BT::NodeBuilder builder =
     [](const std::string & name, const BT::NodeConfiguration & config)
     {
-      return std::make_unique<plansys2_bt_tests::Move>(
+      return std::make_unique<plansys2_gpsr_tayros2::Move>(
         name, "navigate_to_pose", config);
     };
 
-  factory.registerBuilder<plansys2_bt_tests::Move>(
+  factory.registerBuilder<plansys2_gpsr_tayros2::Move>(
     "Move", builder);
 }

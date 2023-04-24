@@ -14,6 +14,7 @@ move_wd:
   ros__parameters:
     plugins:
       - plansys2_move_bt_node
+      - plansys2_open_door_bt_node
     waypoints: ["living_room", "bathroom", "bedroom", "kitchen", "garage"]
     waypoint_coords:
       living_room: [-5.08, -4.93, 0.0]
