@@ -69,8 +69,8 @@ We have also added the "overall" functionality of PDDL to those conditions we be
       (over all(no_prio_task_remaining))
     )
     :effect (and
-      ;it's really important to specify that the gripper is not free at the start of the function in orther to not grab
-      ;more than one object.
+      ;it's really important to specify that the gripper is not free at the start of the function
+      ;in orther to not grab more than one object.
       (at start(not (gripper_free ?g)))
       (at end(not (object_at ?u ?l)))
       (at end(robot_carry ?r ?g ?u))
