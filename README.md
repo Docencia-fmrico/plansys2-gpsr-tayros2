@@ -37,10 +37,8 @@
 
 In order to solve this task, we need to represent the "robot world" in such a way that a planning algorithm can find an optimal solution to make the robot tidy up the house and assist the human with the tasks they request (such as opening and closing doors or bringing them something they need). To do this, we have used PDDL.
 
-Some of the things we have improved for this task include the implementation of the "move_without_door" and "move_by_door" functions as durative actions. The problem we had with these functions is that the robot executed both actions simultaneously, causing the robot to be in two different positions in the house at the same time (which is impossible) or not finding a solution to the specified problem. We have also added the "overall" functionality of PDDL to those conditions we believe they require it and the use of "high-level" functions that need the execution of some other speficific funtions in orther to execute it.
+Some of the things we have improved for this task include the implementation of the "move_without_door" and "move_by_door" functions as durative actions. The problem we had with these functions is that the robot executed both actions simultaneously, causing the robot to be in two different positions in the house at the same time (which is impossible) or not finding a solution to the specified problem. 
 
------------------------------------------------------------------------
-Snippet():
 ``` pddl
   (:durative-action move_by_door
     :parameters (?r - robot ?from ?to - location ?d - door)
@@ -55,6 +53,11 @@ Snippet():
     )
   )
 
+```
+
+We have also added the "overall" functionality of PDDL to those conditions we believe they require it.
+
+``` pddl
   (:durative-action pick
     :parameters (?u - util ?l - location ?r - robot ?g - gripper)
     :duration (= ?duration 1)
@@ -72,7 +75,12 @@ Snippet():
       (at end(robot_carry ?r ?g ?u))
     )
   )
-  
+```
+
+And the use of "high-level" functions that need the execution of some other speficific funtions in orther to execute it.
+
+``` pddl
+
   (:action organize_object
     :parameters (?h - human ?u - util ?l - location)
     :precondition (and
