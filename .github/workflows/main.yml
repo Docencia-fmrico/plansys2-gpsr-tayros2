@@ -1,6 +1,4 @@
 
- 
-
 name: main
 
 on:
@@ -10,7 +8,6 @@ on:
   push:
     branches:
       - main
-
 jobs:
   build-and-test:
     runs-on: ${{ matrix.os }}
@@ -23,7 +20,16 @@ jobs:
     steps:
       - name: Install deps
         run: sudo apt-get update && sudo apt-get install -y wget python3-vcstool python3-colcon-coveragepy-result
-      
+
+      - name: Setup ROS 2
+        uses: ros-tooling/setup-ros@0.3.3
+        with:
+          required-ros-distributions: humble
+
+      - name: Create custom repos
+        run: wget -O /tmp/all.repos https://raw.githubusercontent.com/IntelligentRoboticsLabs/plansys2_tfd_plan_solver/master/plansys2.repos
+
+
       - name: build and test
         uses: ros-tooling/action-ros-ci@0.2.6
         with:
