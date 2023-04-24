@@ -93,24 +93,9 @@ def generate_launch_description():
     #    parameters=[])
 
     # Both are the same action but 1 has to be done first
-    transport_cmd = Node(
-        package='plansys2_gpsr_tayros2',
-        executable='bt_action_node',
-        name='transport',
-        namespace=namespace,
-        output='screen',
-        parameters=[
-          example_dir + '/config/params.yaml',
-          {
-            'action_name': 'transport',
-            'publisher_port': 1674,
-            'server_port': 1675,
-            'bt_xml_file': example_dir + '/behavior_trees_xml/transport.xml'
-          }
-        ])
 
     move_without_door_cmd = Node(
-        package='plansys2_gpsr_tayros2',
+        package='plansys2_bt_actions',
         executable='bt_action_node',
         name='move_wod',
         namespace=namespace,
@@ -119,14 +104,14 @@ def generate_launch_description():
             example_dir + '/config/params.yaml',
             {
             'action_name': 'move_by_door',
-            'publisher_port': 1668,
-            'server_port': 1669,
+            'publisher_port': 1676,
+            'server_port': 1677,
             'bt_xml_file': example_dir + '/behavior_trees_xml/move.xml'
             }
         ])
     
     move_with_door_cmd = Node(
-        package='plansys2_gpsr_tayros2',
+        package='plansys2_bt_actions',
         executable='bt_action_node',
         name='move_wd',
         namespace=namespace,
@@ -135,29 +120,30 @@ def generate_launch_description():
             example_dir + '/config/params.yaml',
             {
             'action_name': 'move_without_door',
-            'publisher_port': 1668,
-            'server_port': 1669,
+            'publisher_port': 1678,
+            'server_port': 1679,
             'bt_xml_file': example_dir + '/behavior_trees_xml/move_wd.xml'
             }
         ])
     
     transport_prio_cmd = Node(
-        package='plansys2_gpsr_tayros2',
+        package='plansys2_bt_actions',
         executable='bt_action_node',
         name='transport_prio',
         namespace=namespace,
+        output='screen',
         parameters=[
             example_dir + '/config/params.yaml',
             {
             'action_name': 'transport',
-            'publisher_port': 1668,
-            'server_port': 1669,
+            'publisher_port': 1680,
+            'server_port': 1681,
             'bt_xml_file': example_dir + '/behavior_trees_xml/transport.xml'
             }
         ])   
      
     transport_cmd = Node(
-        package='plansys2_gpsr_tayros2',
+        package='plansys2_bt_actions',
         executable='bt_action_node',
         name='transport',
         namespace=namespace,
@@ -166,14 +152,14 @@ def generate_launch_description():
             example_dir + '/config/params.yaml',
             {
             'action_name': 'transport',
-            'publisher_port': 1668,
-            'server_port': 1669,
+            'publisher_port': 1682,
+            'server_port': 1683,
             'bt_xml_file': example_dir + '/behavior_trees_xml/transport.xml'
             }
         ])
     
     open_door_req_cmd = Node(
-        package='plansys2_gpsr_tayros2',
+        package='plansys2_bt_actions',
         executable='bt_action_node',
         name='open_door_req',
         namespace=namespace,
@@ -182,14 +168,14 @@ def generate_launch_description():
             example_dir + '/config/params.yaml',
             {
             'action_name': 'open_door_req',
-            'publisher_port': 1668,
-            'server_port': 1669,
+            'publisher_port': 1684,
+            'server_port': 1685,
             'bt_xml_file': example_dir + '/behavior_trees_xml/open_door_req.xml'
             }
         ])
     
     close_door_req_cmd = Node(
-        package='plansys2_gpsr_tayros2',
+        package='plansys2_bt_actions',
         executable='bt_action_node',
         name='close_door_req',
         namespace=namespace,
@@ -198,8 +184,8 @@ def generate_launch_description():
             example_dir + '/config/params.yaml',
             {
             'action_name': 'close_door_req',
-            'publisher_port': 1668,
-            'server_port': 1669,
+            'publisher_port': 1686,
+            'server_port': 1687,
             'bt_xml_file': example_dir + '/behavior_trees_xml/close_door_req.xml'
             }
         ])
