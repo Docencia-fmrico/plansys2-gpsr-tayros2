@@ -109,25 +109,16 @@ def generate_launch_description():
           }
         ])
 
-    transport_prio_cmd = Node(
-        package='plansys2_gpsr_tayros2',
-        executable='bt_action_node',
-        name='transport_prio',
-        namespace=namespace,
-        output='screen',
-
-        parameters=[])
-
     move_without_door_cmd = Node(
         package='plansys2_gpsr_tayros2',
-        executable='bt_action_node',y
+        executable='bt_action_node',
         name='move_wod',
         namespace=namespace,
         output='screen',
         parameters=[
             example_dir + '/config/params.yaml',
             {
-            'action_name': 'move',
+            'action_name': 'move_by_door',
             'publisher_port': 1668,
             'server_port': 1669,
             'bt_xml_file': example_dir + '/behavior_trees_xml/move.xml'
@@ -143,13 +134,28 @@ def generate_launch_description():
         parameters=[
             example_dir + '/config/params.yaml',
             {
-            'action_name': 'move_wd',
+            'action_name': 'move_without_door',
             'publisher_port': 1668,
             'server_port': 1669,
             'bt_xml_file': example_dir + '/behavior_trees_xml/move_wd.xml'
             }
         ])
     
+    transport_prio_cmd = Node(
+        package='plansys2_gpsr_tayros2',
+        executable='bt_action_node',
+        name='transport_prio',
+        namespace=namespace,
+        parameters=[
+            example_dir + '/config/params.yaml',
+            {
+            'action_name': 'transport',
+            'publisher_port': 1668,
+            'server_port': 1669,
+            'bt_xml_file': example_dir + '/behavior_trees_xml/transport.xml'
+            }
+        ])   
+     
     transport_cmd = Node(
         package='plansys2_gpsr_tayros2',
         executable='bt_action_node',
@@ -207,8 +213,8 @@ def generate_launch_description():
     # ld.add_action(open_door_cmd)
     # ld.add_action(move_by_door_cmd)
     # ld.add_action(pick_cmd)
-    ld.add_action(pick_prio_cmd)
-    ld.add_action(drop_cmd)
+    # ld.add_action(pick_prio_cmd)
+    # ld.add_action(drop_cmd)
     ld.add_action(move_without_door_cmd)
     ld.add_action(move_with_door_cmd)
     ld.add_action(transport_cmd)
@@ -216,5 +222,7 @@ def generate_launch_description():
     ld.add_action(transport_cmd)
     ld.add_action(transport_prio_cmd)
 
+    ld.add_action(close_door_req_cmd)
+    ld.add_action(open_door_req_cmd)
 
     return ld

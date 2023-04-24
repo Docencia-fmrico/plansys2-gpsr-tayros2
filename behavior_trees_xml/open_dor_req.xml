@@ -3,7 +3,6 @@
        <Sequence name="root_sequence">
            <Move    name="move" goal="${arg2}"/>
            <OpenDoor name="open_door"/>
-           
        </Sequence>
     </BehaviorTree>
 </root>
