@@ -35,11 +35,43 @@
 
 ## Logic and functionality
 
+In order to solve this task, we need to represent the "robot world" in such a way that a planning algorithm can find an optimal solution to make the robot tidy up the house and assist the human with the tasks they request (such as opening and closing doors or bringing them something they need). To do this, we have used PDDL.
+
+Some of the things we have improved for this task include the implementation of the "move_without_door" and "move_by_door" functions as durative actions. The problem we had with these functions is that the robot executed both actions simultaneously, causing the robot to be in two different positions in the house at the same time (which is impossible) or not finding a solution to the specified problem. We have also added the "overall" functionality of PDDL to those conditions we believe they require it.
 
 -----------------------------------------------------------------------
 Snippet():
-``` cpp
+``` pddl
+  (:durative-action move_by_door
+    :parameters (?r - robot ?from ?to - location ?d - door)
+    :duration ( = ?duration 5)
+    :condition (and
+      (at start(robot_at ?r ?from))
+      (at start(connected_by_door ?from ?to ?d))
+    )
+    :effect (and
+      (at start(not (robot_at ?r ?from)))
+      (at end(robot_at ?r ?to))
+    )
+  )
 
+  (:durative-action pick
+    :parameters (?u - util ?l - location ?r - robot ?g - gripper)
+    :duration (= ?duration 1)
+    :condition (and
+      (at start(gripper_at ?g ?r))
+      (at start(object_at ?u ?l))
+      (at start(gripper_free ?g))
+      (over all(robot_at ?r ?l))
+      (over all(no_prio_task_remaining))
+    )
+    :effect (and
+      ;importantisimo indicar que el gancho deja de estar libre cuand empieza la accion
+      (at start(not (gripper_free ?g)))
+      (at end(not (object_at ?u ?l)))
+      (at end(robot_carry ?r ?g ?u))
+    )
+  )
 
 ```
 -----------------------------------------------------------------------
