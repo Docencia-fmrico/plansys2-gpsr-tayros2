@@ -13,6 +13,7 @@ find_package(plansys2_problem_expert REQUIRED)
 find_package(plansys2_pddl_parser REQUIRED)
 find_package(ament_index_cpp REQUIRED)
 find_package(plansys2_bt_actions REQUIRED)
+find_package(tf2_geometry_msgs REQUIRED)
 find_package(nav2_msgs REQUIRED)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -20,6 +21,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(dependencies
     rclcpp
     rclcpp_action
+    tf2_geometry_msgs
     plansys2_msgs
     plansys2_domain_expert
     plansys2_executor
@@ -65,6 +67,9 @@ list(APPEND plugin_libs plansys2_opendoor_bt_node)
 
 add_library(plansys2_pick_bt_node SHARED src/behavior_tree_nodes/Pick.cpp)
 list(APPEND plugin_libs plansys2_pick_bt_node)
+
+add_library(plansys2_move_bt_node SHARED src/behavior_tree_nodes/Move.cpp)
+list(APPEND plugin_libs plansys2_move_bt_node)
 
 
 foreach(bt_plugin ${plugin_libs})
