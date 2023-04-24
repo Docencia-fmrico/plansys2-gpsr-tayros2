@@ -98,6 +98,7 @@ public:
     problem_expert_->addPredicate(plansys2::Predicate("(close doorB)"));
     problem_expert_->addPredicate(plansys2::Predicate("(close doorC)"));
     problem_expert_->addPredicate(plansys2::Predicate("(close doorD)"));
+    problem_expert_->addPredicate(plansys2::Predicate("no_prio_task_remaining"));
     problem_expert_->addPredicate(plansys2::Predicate("(pick_request granny tools)"));
     
   }
@@ -108,7 +109,7 @@ public:
       case STARTING:
         {
           // Set the goal for next state
-          problem_expert_->setGoal(plansys2::Goal("(and(robot_at tay bedroom))"));
+          problem_expert_->setGoal(plansys2::Goal("(and(object_at silverware bedroom))"));
 
           // Compute the plan
           auto domain = domain_expert_->getDomain();
