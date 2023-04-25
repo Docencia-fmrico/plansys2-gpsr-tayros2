@@ -111,6 +111,40 @@ private:
   }
 };
 
+TEST(bt_action, open_door_btn)
+{
+  auto node = rclcpp::Node::make_shared("plansys2_opendoor_bt_node");
+  auto node_sink = std::make_shared<VelocitySinkNode>();
+
+  BT::BehaviorTreeFactory factory;
+  BT::SharedLibrary loader;
+
+  factory.registerFromPlugin(loader.getOSName("plansys2_opendoor_bt_node"));
+
+  std::string xml_bt =
+    R"(
+    <root main_tree_to_execute = "MainTree" >
+      <BehaviorTree ID="MainTree">
+          <OpenDoor    name="open_door"/>
+      </BehaviorTree>
+    </root>)";
+
+  auto blackboard = BT::Blackboard::create();
+  blackboard->set("node", node);
+  BT::Tree tree = factory.createTreeFromText(xml_bt, blackboard);
+
+  rclcpp::Rate rate(10);
+  auto last_status = BT::NodeStatus::FAILURE;
+
+  for (int i = 0 ; i < 5; i++) {
+    last_status = tree.rootNode()->executeTick();
+
+    rclcpp::spin_some(node_sink->get_node_base_interface());
+    rate.sleep();
+  }
+
+  ASSERT_EQ(last_status, BT::NodeStatus::SUCCESS);
+}
 
 
 TEST(bt_action, move_btn)
@@ -169,41 +203,6 @@ TEST(bt_action, move_btn)
   ASSERT_EQ(last_status, BT::NodeStatus::SUCCESS);
 }
 
-
-TEST(bt_action, open_door_btn)
-{
-  auto node = rclcpp::Node::make_shared("plansys2_opendoor_bt_node");
-  auto node_sink = std::make_shared<VelocitySinkNode>();
-
-  BT::BehaviorTreeFactory factory;
-  BT::SharedLibrary loader;
-
-  factory.registerFromPlugin(loader.getOSName("plansys2_opendoor_bt_node"));
-
-  std::string xml_bt =
-    R"(
-    <root main_tree_to_execute = "MainTree" >
-      <BehaviorTree ID="MainTree">
-          <OpenDoor    name="open_door"/>
-      </BehaviorTree>
-    </root>)";
-
-  auto blackboard = BT::Blackboard::create();
-  blackboard->set("node", node);
-  BT::Tree tree = factory.createTreeFromText(xml_bt, blackboard);
-
-  rclcpp::Rate rate(10);
-  auto last_status = BT::NodeStatus::FAILURE;
-
-  for (int i = 0 ; i < 5; i++) {
-    last_status = tree.rootNode()->executeTick();
-
-    rclcpp::spin_some(node_sink->get_node_base_interface());
-    rate.sleep();
-  }
-
-  ASSERT_EQ(last_status, BT::NodeStatus::SUCCESS);
-}
 
 
 int main(int argc, char ** argv)
