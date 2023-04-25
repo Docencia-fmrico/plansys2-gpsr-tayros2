@@ -40,7 +40,8 @@ using namespace std::chrono_literals;
 TEST(bt_action, open_door_btn)
 {
   auto node = rclcpp::Node::make_shared("plansys2_opendoor_bt_node");
-  auto node_sink = std::make_shared<VelocitySinkNode>();
+
+  rclcpp::spin_some(node);
 
   BT::BehaviorTreeFactory factory;
   BT::SharedLibrary loader;
@@ -63,7 +64,6 @@ TEST(bt_action, open_door_btn)
   auto last_status = BT::NodeStatus::FAILURE;
 
   // Cambiar a 5
-  auto start = now();
   int counter = 0;
   bool finish = false;
 

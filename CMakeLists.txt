@@ -12,6 +12,7 @@ find_package(plansys2_planner REQUIRED)
 find_package(plansys2_problem_expert REQUIRED)
 find_package(plansys2_pddl_parser REQUIRED)
 find_package(ament_index_cpp REQUIRED)
+find_package(plansys2_tests REQUIRED)
 find_package(plansys2_bt_actions REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(nav2_msgs REQUIRED)
@@ -29,6 +30,7 @@ set(dependencies
     plansys2_problem_expert
     plansys2_pddl_parser
     ament_index_cpp
+    plansys2_tests
     plansys2_bt_actions
     nav2_msgs
 )
