@@ -126,37 +126,70 @@ def generate_launch_description():
             }
         ])
     
-    transport_prio_cmd = Node(
+    pick_prio_cmd = Node(
         package='plansys2_bt_actions',
         executable='bt_action_node',
-        name='transport_prio',
+        name='pick_prio',
         namespace=namespace,
         output='screen',
         parameters=[
             example_dir + '/config/params.yaml',
             {
-            'action_name': 'prio_transport',
+            'action_name': 'pick_prio',
             'publisher_port': 1680,
             'server_port': 1681,
-            'bt_xml_file': example_dir + '/behavior_trees_xml/transport.xml'
+            'bt_xml_file': example_dir + '/behavior_trees_xml/pick.xml'
             }
         ])   
      
-    transport_cmd = Node(
+    pick_cmd = Node(
         package='plansys2_bt_actions',
         executable='bt_action_node',
-        name='transport',
+        name='pick',
         namespace=namespace,
         output='screen',
         parameters=[
             example_dir + '/config/params.yaml',
             {
-            'action_name': 'transport',
+            'action_name': 'pick',
             'publisher_port': 1682,
             'server_port': 1683,
-            'bt_xml_file': example_dir + '/behavior_trees_xml/transport.xml'
+            'bt_xml_file': example_dir + '/behavior_trees_xml/pick.xml'
             }
         ])
+    
+    drop_cmd = Node(
+        package='plansys2_bt_actions',
+        executable='bt_action_node',
+        name='drop',
+        namespace=namespace,
+        output='screen',
+        parameters=[
+            example_dir + '/config/params.yaml',
+            {
+            'action_name': 'drop',
+            'publisher_port': 1684,
+            'server_port': 1685,
+            'bt_xml_file': example_dir + '/behavior_trees_xml/drop.xml'
+            }
+        ])
+
+    open_door_cmd = Node(
+        package='plansys2_bt_actions',
+        executable='bt_action_node',
+        name='open_door',
+        namespace=namespace,
+        output='screen',
+        parameters=[
+            example_dir + '/config/params.yaml',
+            {
+            'action_name': 'open-door',
+            'publisher_port': 1686,
+            'server_port': 1687,
+            'bt_xml_file': example_dir + '/behavior_trees_xml/open_door_req.xml'
+            }
+        ])
+    
 
    
     ld = LaunchDescription()
@@ -165,14 +198,15 @@ def generate_launch_description():
     # Declare the launch options
     ld.add_action(plansys2_cmd)
 #    ld.add_action(close_door_cmd)
-    # ld.add_action(open_door_cmd)
+    ld.add_action(open_door_cmd)
     # ld.add_action(move_by_door_cmd)
     # ld.add_action(pick_cmd)
     # ld.add_action(pick_prio_cmd)
     # ld.add_action(drop_cmd)
     ld.add_action(move_without_door_cmd)
     ld.add_action(move_with_door_cmd)
-    ld.add_action(transport_cmd)
-    ld.add_action(transport_prio_cmd)
+    ld.add_action(pick_cmd)
+    ld.add_action(drop_cmd)
+    ld.add_action(pick_prio_cmd)
 
     return ld

@@ -2,9 +2,6 @@
     <BehaviorTree ID="MainTree">
        <Sequence name="root_sequence">
            <OpenGripper    name="open_gripper"/>
-           <CloseGripper   name="close_gripper"/>
-           <Move    name="move" goal="${arg3}"/>
-           <OpenGripper    name="open_gripper"/>
        </Sequence>
     </BehaviorTree>
 </root>

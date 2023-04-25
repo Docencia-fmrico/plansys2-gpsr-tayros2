@@ -1,0 +1,7 @@
+<root main_tree_to_execute = "MainTree" >
+    <BehaviorTree ID="MainTree">
+       <Sequence name="root_sequence">
+           <CloseGripper    name="close_gripper"/>
+       </Sequence>
+    </BehaviorTree>
+</root>
