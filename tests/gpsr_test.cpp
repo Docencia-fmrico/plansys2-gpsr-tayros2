@@ -33,9 +33,9 @@
 #include "rclcpp_action/rclcpp_action.hpp"
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
 
-#include "/src/behavior_tree_nodes/OpenGripper.hpp"
-#include "/src/behavior_tree_nodes/CloseGripper.hpp"
-#include "/src/behavior_tree_nodes/Move.hpp"
+#include "../include/CloseGripper.hpp"
+#include "../include/OpenGripper.hpp"
+#include "../include/Move.hpp"
 
 using namespace std::placeholders;
 using namespace std::chrono_literals;
