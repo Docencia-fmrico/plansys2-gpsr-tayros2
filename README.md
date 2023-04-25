@@ -137,9 +137,9 @@ https://user-images.githubusercontent.com/72991245/234416000-699a8d96-427e-407f-
 
 https://user-images.githubusercontent.com/72991245/234413454-8c0a70c2-16ee-43a5-8b04-d4e07adb2c7e.mp4
 
-3. Example video #3 (Granny requests): [Alternative Link (Youtube)](https://www.youtube.com/watch?v=F57P4S2pAxM&feature=youtu.be)
+3. Example video #3 (Granny requests): [Alternative Link (Youtube)](https://www.youtube.com/watch?v=_RT00gt9MJo)
 
-https://user-images.githubusercontent.com/72991245/234413719-7fd676d1-9793-40ab-be9d-def6d1722a16.mp4
+https://user-images.githubusercontent.com/72991245/234419252-813e3245-10e0-4e86-9804-e3eea75c3619.mp4
 
 ## Behavior Tree Diagram 
 
