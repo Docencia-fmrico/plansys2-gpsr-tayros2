@@ -146,7 +146,7 @@ https://user-images.githubusercontent.com/72991245/234419720-eb67722f-de40-4c76-
 Program diagram:
 
 <div align="center">
-<img width=800px src="https://github.com/Docencia-fmrico/plansys2-gpsr-tayros2/blob/Readme/resources/structure.png" alt="explode"></a>
+<img width=800px src="https://github.com/Docencia-fmrico/plansys2-gpsr-tayros2/blob/Readme/resources/estructure.png" alt="explode"></a>
 </div>
 
 In order to execute more complex actions such as picking and dropping objects, we employed behavior trees which included the steps of opening the gripper, approaching the object with the arm, and closing the gripper. However, due to the fact that this was a simulation, we omitted the approximation step in order to allocate more attention to other aspects of the program.
@@ -240,11 +240,7 @@ In order to install the necessary repositories for the packages in this assignme
         colcon-mixin-repository: https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml
 ```
 
-This significantly increases the time required to run tests as the package needs to be compiled in the container.
-
-### test
-
-We conducted a simple test using behavior trees, similar to the previous assignment, to verify the functionality of the basic nodes.
+This significantly increases the time required to run tests as the package needs to be compiled in the container. Then we conducted a simple test using behavior trees, similar to the previous assignment, to verify the functionality of the basic nodes.
 
 ## Team
 
