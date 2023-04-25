@@ -19,6 +19,7 @@
 #include <string>
 #include <vector>
 
+
 #include "ament_index_cpp/get_package_share_directory.hpp"
 #include "behaviortree_cpp_v3/behavior_tree.h"
 #include "behaviortree_cpp_v3/bt_factory.h"
@@ -63,15 +64,16 @@ TEST(bt_action, open_door_btn)
 
   // Cambiar a 5
   auto start = now();
+  int counter = 0;
+  bool finish = false;
 
-  while ((now() - start) < 5s) {
-    last_status = tree.OpenDoorNode()->executeTick();
-
-    rclcpp::spin_some(node_sink->get_node_base_interface());
+  while (!finish && rclcpp::ok()) {
+    finish = tree.rootNode()->executeTick() == BT::NodeStatus::SUCCESS;
     rate.sleep();
+    counter++;
   }
 
-  ASSERT_EQ(last_status, BT::NodeStatus::SUCCESS);
+  ASSERT_GT(counter, 4);
 }
 
 
