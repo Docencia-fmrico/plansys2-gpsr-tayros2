@@ -33,6 +33,10 @@
 #include "rclcpp_action/rclcpp_action.hpp"
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
 
+#include "/src/behavior_tree_nodes/OpenGripper.hpp"
+#include "/src/behavior_tree_nodes/CloseGripper.hpp"
+#include "/src/behavior_tree_nodes/Move.hpp"
+
 using namespace std::placeholders;
 using namespace std::chrono_literals;
 
@@ -73,107 +77,46 @@ TEST(bt_action, open_door_btn)
     counter++;
   }
 
-  ASSERT_GT(counter, 4);
+  ASSERT_EQ(counter, 6);
 }
 
 
-/*TEST(bt_action, move_btn)
+TEST(bt_action, move_btn)
 {
-  auto test_node = rclcpp::Node::make_shared("test_node");
-  auto domain_node = std::make_shared<plansys2::DomainExpertNode>();
-  auto problem_node = std::make_shared<plansys2::ProblemExpertNode>();
-  auto planner_node = std::make_shared<plansys2::PlannerNode>();
-  auto executor_node = std::make_shared<plansys2::ExecutorNode>();
+  std::string pkgpath = ament_index_cpp::get_package_share_directory("plansys2_bt_actions");
+  std::string xml_file = pkgpath + "/test/behavior_tree/assemble.xml";
 
-  auto domain_client = std::make_shared<plansys2::DomainExpertClient>();
-  auto problem_client = std::make_shared<plansys2::ProblemExpertClient>();
-  auto planner_client = std::make_shared<plansys2::PlannerClient>();
-  auto executor_client = std::make_shared<plansys2::ExecutorClient>();
+  std::vector<std::string> plugins = {
+    "plansys2_close_gripper_bt_node", "plansys2_open_gripper_bt_node"};
 
-  auto move_action_node = plansys2_tests::TestAction::make_shared("move");
+  auto bt_action = std::make_shared<plansys2::BTAction>("assemble", 100ms);
 
-  auto execution_logger = plansys2_tests::ExecutionLogger::make_shared();
+  auto lc_node = rclcpp_lifecycle::LifecycleNode::make_shared("test_node");
+  auto action_client = plansys2::ActionExecutor::make_shared("(assemble r2d2 z p1 p2 p3)", lc_node);
 
-  std::string pkgpath = ament_index_cpp::get_package_share_directory("plansys2_gpsr_tayros2");
+  bt_action->set_parameter(rclcpp::Parameter("action_name", "assemble"));
+  bt_action->set_parameter(rclcpp::Parameter("bt_xml_file", xml_file));
+  bt_action->set_parameter(rclcpp::Parameter("plugins", plugins));
 
-  domain_node->set_parameter({"model_file", pkgpath + "/pddl/house_granny_domain.pddl"});
-  problem_node->set_parameter({"model_file", pkgpath + "/pddl/house_granny_domain.pddl"});
+  bt_action->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
 
-  rclcpp::executors::MultiThreadedExecutor exe(rclcpp::ExecutorOptions(), 8);
+  rclcpp::executors::MultiThreadedExecutor exe;
+  exe.add_node(bt_action->get_node_base_interface());
+  exe.add_node(lc_node->get_node_base_interface());
 
-  exe.add_node(domain_node->get_node_base_interface());
-  exe.add_node(problem_node->get_node_base_interface());
-  exe.add_node(planner_node->get_node_base_interface());
-  exe.add_node(executor_node->get_node_base_interface());
-  exe.add_node(move_action_node->get_node_base_interface());
-  exe.add_node(ask_charge_node->get_node_base_interface());
-  exe.add_node(charge_node->get_node_base_interface());
-  exe.add_node(execution_logger->get_node_base_interface());
+  bool finished = false;
+  while (rclcpp::ok && !finished) {
+    exe.spin_some();
 
-  bool finish = false;
-  std::thread t([&]() {
-      while (!finish) {exe.spin_some();}
-    });
-
-  domain_node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
-  problem_node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
-  planner_node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
-  executor_node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
-
-  {
-    rclcpp::Rate rate(10);
-    auto start = test_node->now();
-    while ((test_node->now() - start).seconds() < 0.5) {
-      rate.sleep();
-    }
+    action_client->tick(lc_node->now());
+    finished = action_client->get_status() == BT::NodeStatus::SUCCESS;
   }
 
-  domain_node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_ACTIVATE);
-  problem_node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_ACTIVATE);
-  planner_node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_ACTIVATE);
-  executor_node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_ACTIVATE);
-
-  {
-    rclcpp::Rate rate(10);
-    auto start = test_node->now();
-    while ((test_node->now() - start).seconds() < 0.5) {
-      rate.sleep();
-    }
+  auto start = lc_node->now();
+  while ( (lc_node->now() - start).seconds() < 2) {
+    exe.spin_some();
   }
-
-  problem_client->addInstance(plansys2::Instance("tay", "robot"));
-
-  problem_client->addInstance(plansys2::Instance("entrance", "room"));
-  problem_client->addInstance(plansys2::Instance("kitchen", "room"));
- 
-  problem_client->addPredicate(plansys2::Predicate("(connected entrance kitchen)"));
-  problem_client->addPredicate(plansys2::Predicate("(connected kitchen entrance)"));
-
-  problem_client->addPredicate(plansys2::Predicate("(robot_at tay entrance)"));
-
-  problem_client->setGoal(plansys2::Goal("(and(robot_at tay kitchen))"));
-
-  auto domain = domain_client->getDomain();
-  auto problem = problem_client->getProblem();
-  auto plan = planner_client->getPlan(domain, problem);
-
-  ASSERT_FALSE(domain.empty());
-  ASSERT_FALSE(problem.empty());
-  ASSERT_TRUE(plan.has_value());
-
-  ASSERT_TRUE(executor_client->start_plan_execution(plan.value()));
-
-  rclcpp::Rate rate(5);
-  while (executor_client->execute_and_check_plan()) {
-    rate.sleep();
-  }
-
-  auto result = executor_client->getResult();
-  ASSERT_TRUE(result.value().success);
-
-  finish = true;
-  t.join();
-}*/
+}
 
 
 
