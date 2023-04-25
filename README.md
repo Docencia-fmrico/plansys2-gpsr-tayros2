@@ -51,6 +51,17 @@ To use the repository, you will need to follow this steps:
 
 Note: Due to the problems in the updates of the Tiago, you could find some troubles in the navigation launch and using this project repository if you have updated the packages.
 
+-----------------------------------------------------------------------
+Launch Commands:
+``` shell
+ros2 launch ir_robots simulation.launch
+ros2 launch br2_navigation tiago_navigation.launch.py
+ros2 launch plansys2_gpsr_tayros2 plansys2_gpsr.launch.py
+ros2 run plansys2_gpsr_tayros2 gpsr_controller_node
+```
+-----------------------------------------------------------------------
+
+
 ## PDDL
 
 In order to solve this task, we need to represent the "robot world" in such a way that a planning algorithm can find an optimal solution to make the robot tidy up the house and assist the human with the tasks they request (such as opening and closing doors or bringing them something they need). To do this, we have used PDDL.
