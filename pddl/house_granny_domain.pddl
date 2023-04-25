@@ -57,8 +57,6 @@
     )
   )
 
-  ; acciones instantaneas ya que sino atraviesa a la vez una habitacion
-  ; con puerta y una sin puerta estando en 2 sitios distintos a la vez
   (:durative-action move_by_door
     :parameters (?r - robot ?from ?to - location ?d - door)
     :duration ( = ?duration 5)
@@ -96,7 +94,6 @@
       (over all(no_prio_task_remaining))
     )
     :effect (and
-      ;importantisimo indicar que el gancho deja de estar libre cuand empieza la accion
       (at start(not (gripper_free ?g)))
       (at end(not (object_at ?u ?l)))
       (at end(robot_carry ?r ?g ?u))
@@ -114,8 +111,6 @@
       (over all(pick_request ?h ?u))
     )
     :effect (and
-      ;importe indicar que el gancho deja de estar libre cuando empieza la acción
-      ;para que solo coja un objeto
       (at start(not (gripper_free ?g)))
       (at end(not (object_at ?u ?l)))
       (at end(robot_carry ?r ?g ?u))
@@ -148,7 +143,7 @@
     )
     :effect (and
       (at start(not (pick_request ?h ?u)))
-      (at end(human_attended ?h)))
+      (at end(human_attended ?h))
     )
   )
 
