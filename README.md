@@ -14,7 +14,7 @@
 <img width=90px src="https://img.shields.io/badge/team-TayRos2-yellow" alt="explode"></a>
 </div>
 
-[![main](https://github.com/Docencia-fmrico/patrolling-tayros2/actions/workflows/main.yml/badge.svg)](https://github.com/Docencia-fmrico/patrolling-tayros2/actions/workflows/main.yml)
+[![main](https://github.com/Docencia-fmrico/patrolling-tayros2/actions/workflows/main.yml/badge.svg)](https://github.com/Docencia-fmrico/plansys2-gpsr-tayros2/actions/workflows/main.yml)
 
 
 ## Table of Contents
