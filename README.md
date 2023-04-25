@@ -3,7 +3,7 @@
 # PlanSys2 GPSR - TayROS2
 
 <div align="center">
-<img width=500px src="https://github.com/Docencia-fmrico/" alt="explode"></a>
+<img width=500px src="https://github.com/Docencia-fmrico/plansys2-gpsr-tayros2/blob/Readme/resources/PDDL_MAP.png" alt="explode"></a>
 </div>
 
 <h3 align="center"> PlanSys2 </h3>
