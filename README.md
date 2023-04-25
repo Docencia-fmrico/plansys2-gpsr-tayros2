@@ -37,14 +37,19 @@ This project requires the [ir_robots](https://github.com/IntelligentRoboticsLabs
 To use the repository, you will need to follow this steps:
 
 1. Launch the ir_robots simulation launcher:
+![Launch_ir_robots](https://user-images.githubusercontent.com/72991245/234414137-64e50ef9-e4d7-4d54-8688-44b4f0607b98.gif)
 
 2. Launch the navigation from the br_navigation launcher:
+![Launch_br_navigation](https://user-images.githubusercontent.com/72991245/234414154-3063c41e-56bc-4f29-8df4-69273a2a5cf9.gif)
 
 3. Launch the gpsr-tayros2 launcher:
+![Launch_plansys2](https://user-images.githubusercontent.com/72991245/234414174-55f67fa4-9a64-430a-8425-53af074eff32.gif)
 
 4. Run the controller node:
+![Run_plansys2](https://user-images.githubusercontent.com/72991245/234414191-6a4bc874-aecd-4078-b064-fa301b6a64ea.gif)
 
-### Note: Due to the problems in the updates of the Tiago, you could find some troubles in the navigation launch and using this project repository if you have updated the packages.
+
+Note: Due to the problems in the updates of the Tiago, you could find some troubles in the navigation launch and using this project repository if you have updated the packages.
 
 ## PDDL
 
