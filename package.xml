@@ -25,6 +25,7 @@
   <depend>plansys2_pddl_parser</depend>
   <depend>ament_index_cpp</depend>
   <depend>plansys2_bt_actions</depend>
+  <depend>plansys2_tests</depend>
 
   <exec_depend>plansys2_bringup</exec_depend>
   <exec_depend>plansys2_terminal</exec_depend>
