@@ -68,13 +68,13 @@ def generate_launch_description():
         parameters=[
             example_dir + '/config/params.yaml',
             {
-            'action_name': 'move_without_door',
-            'publisher_port': 1676,
-            'server_port': 1677,
-            'bt_xml_file': example_dir + '/behavior_trees_xml/move.xml'
+                'action_name': 'move_without_door',
+                'publisher_port': 1676,
+                'server_port': 1677,
+                'bt_xml_file': example_dir + '/behavior_trees_xml/move.xml'
             }
         ])
-    
+
     move_with_door_cmd = Node(
         package='plansys2_bt_actions',
         executable='bt_action_node',
@@ -84,14 +84,13 @@ def generate_launch_description():
         parameters=[
             example_dir + '/config/params.yaml',
             {
-            'action_name': 'move_by_door',
-            'publisher_port': 1678,
-            'server_port': 1679,
-            'bt_xml_file': example_dir + '/behavior_trees_xml/move_wd.xml'
+                'action_name': 'move_by_door',
+                'publisher_port': 1678,
+                'server_port': 1679,
+                'bt_xml_file': example_dir + '/behavior_trees_xml/move_wd.xml'
             }
         ])
-    
-    
+
     pick_cmd = Node(
         package='plansys2_bt_actions',
         executable='bt_action_node',
@@ -101,13 +100,13 @@ def generate_launch_description():
         parameters=[
             example_dir + '/config/params.yaml',
             {
-            'action_name': 'pick',
-            'publisher_port': 1682,
-            'server_port': 1683,
-            'bt_xml_file': example_dir + '/behavior_trees_xml/pick.xml'
+                'action_name': 'pick',
+                'publisher_port': 1682,
+                'server_port': 1683,
+                'bt_xml_file': example_dir + '/behavior_trees_xml/pick.xml'
             }
         ])
-    
+
     drop_cmd = Node(
         package='plansys2_bt_actions',
         executable='bt_action_node',
@@ -117,13 +116,13 @@ def generate_launch_description():
         parameters=[
             example_dir + '/config/params.yaml',
             {
-            'action_name': 'drop',
-            'publisher_port': 1684,
-            'server_port': 1685,
-            'bt_xml_file': example_dir + '/behavior_trees_xml/drop.xml'
+                'action_name': 'drop',
+                'publisher_port': 1684,
+                'server_port': 1685,
+                'bt_xml_file': example_dir + '/behavior_trees_xml/drop.xml'
             }
         ])
-    
+
     #-- Only if no doors map
     # transport_cmd = Node(
     #     package='plansys2_bt_actions',
@@ -140,8 +139,7 @@ def generate_launch_description():
     #         'bt_xml_file': example_dir + '/behavior_trees_xml/transport.xml'
     #         }
     #     ])
-        
-   
+
     ld = LaunchDescription()
     ld.add_action(declare_namespace_cmd)
 
