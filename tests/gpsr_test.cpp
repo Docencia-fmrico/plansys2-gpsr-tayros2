@@ -112,7 +112,6 @@ private:
 };
 
 
-
 TEST(bt_action, move_btn)
 {
   auto node = rclcpp::Node::make_shared("plansys2_move_bt_node");
@@ -195,7 +194,7 @@ TEST(bt_action, open_door_btn)
   rclcpp::Rate rate(10);
   auto last_status = BT::NodeStatus::FAILURE;
 
-  for (int i = 0 ; i < 5; i++) {
+  for (int i = 0; i < 5; i++) {
     last_status = tree.rootNode()->executeTick();
 
     rclcpp::spin_some(node_sink->get_node_base_interface());

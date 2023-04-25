@@ -76,8 +76,12 @@ public:
     problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door bathroom kitchen doora)"));
     problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door kitchen bedroom doorb)"));
     problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door bedroom kitchen doorb)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door living_room garage doorc)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door garage living_room doorc)"));
+    problem_expert_->addPredicate(
+      plansys2::Predicate(
+        "(connected_by_door living_room garage doorc)"));
+    problem_expert_->addPredicate(
+      plansys2::Predicate(
+        "(connected_by_door garage living_room doorc)"));
     problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door bedroom garage doord)"));
     problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door garage bedroom doord)"));
 
@@ -100,7 +104,6 @@ public:
     problem_expert_->addPredicate(plansys2::Predicate("(open doord)"));
     problem_expert_->addPredicate(plansys2::Predicate("(no_prio_task_remaining"));
     problem_expert_->addPredicate(plansys2::Predicate("(pick_request granny tools)"));
-    
   }
 
   void step()
@@ -122,7 +125,7 @@ public:
             break;
           }
           // este else esta solo con motivos de debug
-          else{
+          else {
             state_ = WORKING;
           }
 
@@ -132,28 +135,27 @@ public:
           }
         }
         break;
-        case WORKING:
-          {
-            auto feedback = executor_client_->getFeedBack();
+      case WORKING:
+        {
+          auto feedback = executor_client_->getFeedBack();
 
-            for (const auto & action_feedback : feedback.action_execution_status) {
-              if (action_feedback.completion) {
-                std::cout << "[" << action_feedback.action << " " <<
+          for (const auto & action_feedback : feedback.action_execution_status) {
+            if (action_feedback.completion) {
+              std::cout << "[" << action_feedback.action << " " <<
                 "SUCCESS" << "]";
-              }
-              else {
-                std::cout << "[" << action_feedback.action << " " <<
+            } else {
+              std::cout << "[" << action_feedback.action << " " <<
                 "RUNNING..." << "]";
-              }
-            }
-            std::cout << std::endl;
-
-            if (!executor_client_->execute_and_check_plan() && executor_client_->getResult()) {
-              if (executor_client_->getResult().value().success) {
-                std::cout << "Successful finished " << std::endl;
-              }
             }
           }
+          std::cout << std::endl;
+
+          if (!executor_client_->execute_and_check_plan() && executor_client_->getResult()) {
+            if (executor_client_->getResult().value().success) {
+              std::cout << "Successful finished " << std::endl;
+            }
+          }
+        }
         break;
     }
   }
