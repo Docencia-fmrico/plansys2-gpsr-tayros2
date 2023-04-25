@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef PLANSYS2_GPSR_TAYROS2_BEHAVIOR_TREE_NODES__CLOSEGRIPPER_HPP_
-#define PLANSYS2_GPSR_TAYROS2_BEHAVIOR_TREE_NODES__CLOSEGRIPPER_HPP_
+#ifndef PLANSYS2_GPSR_TAYROS2__BEHAVIOR_TREE_NODES__CLOSEGRIPPER_HPP_
+#define PLANSYS2_GPSR_TAYROS2__BEHAVIOR_TREE_NODES__CLOSEGRIPPER_HPP_
 
 #include <string>
 
@@ -44,4 +44,4 @@ private:
 
 }  // namespace plansys2_gpsr_tayros2
 
-#endif  // PLANSYS2_GPSR_TAYROS2_BEHAVIOR_TREE_NODES__CLOSEGRIPPER_HPP_
+#endif  // PLANSYS2_GPSR_TAYROS2__BEHAVIOR_TREE_NODES__CLOSEGRIPPER_HPP_

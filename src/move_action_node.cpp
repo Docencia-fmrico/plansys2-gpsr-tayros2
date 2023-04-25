@@ -35,8 +35,8 @@ class MoveAction : public plansys2::ActionExecutorClient
 {
 public:
   MoveAction()
-  : plansys2::ActionExecutorClient("move_without_door", 250ms) // TAKE CARE is not for all the movements(only whitout door)
-  {
+  : plansys2::ActionExecutorClient("move_without_door", 250ms)
+  { // TAKE CARE is not for all the movements(only whitout door)
     geometry_msgs::msg::PoseStamped wp;
     wp.header.frame_id = "map";
     wp.header.stamp = now();
@@ -97,7 +97,8 @@ public:
 
     RCLCPP_INFO(get_logger(), "Navigation action server ready");
 
-    auto wp_to_navigate = get_arguments()[2];  // The goal is in the 3rd argument of the action move_without_door
+    // The goal is in the 3rd argument of the action move_without_door
+    auto wp_to_navigate = get_arguments()[2];
     RCLCPP_INFO(get_logger(), "Start navigation to [%s]", wp_to_navigate.c_str());
 
     goal_pos_ = waypoints_[wp_to_navigate];

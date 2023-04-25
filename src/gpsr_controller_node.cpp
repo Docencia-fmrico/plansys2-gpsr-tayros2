@@ -100,7 +100,6 @@ public:
     problem_expert_->addPredicate(plansys2::Predicate("(close doorD)"));
     problem_expert_->addPredicate(plansys2::Predicate("(no_prio_task_remaining"));
     problem_expert_->addPredicate(plansys2::Predicate("(pick_request granny tools)"));
-
   }
 
   void step()
