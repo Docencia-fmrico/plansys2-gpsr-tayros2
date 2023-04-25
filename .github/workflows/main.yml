@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - main
+      - tests
 
 jobs:
   build-and-test:
@@ -36,4 +37,9 @@ jobs:
           vcs-repo-file-url: /tmp/all.repos
           colcon-mixin-name: coverage-gcc
           colcon-mixin-repository: https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml
-
+          colcon-defaults: |
+            {
+              "test": {
+                "parallel-workers" : 1
+              }
+            }
