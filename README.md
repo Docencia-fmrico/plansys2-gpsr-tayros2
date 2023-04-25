@@ -123,6 +123,40 @@ launch.py:
 ```
 -----------------------------------------------------------------------
 
+## Controller
+
+In order to facilitate the user with the implementation of what would be the typical "problem.pddl" file and using the modularity offered by Plansys2, which allows us to use functions from the classes responsible for the operation of domain and problem processing as well as the correct functioning of the planner and executor; we have created a ros2 node as a "controller" that will be responsible for instantiating "the robot's world", indicating the goal to be achieved and ensuring proper robot operation (feedback). The logic for this node is located in the "gpsr_controller_node.cpp" file.
+
+gpsr_controller_node.cpp:
+``` c++
+    // Initializing the objects that will allow us to use the functionality of the Plansys2 modules.
+    domain_expert_ = std::make_shared<plansys2::DomainExpertClient>();
+    planner_client_ = std::make_shared<plansys2::PlannerClient>();
+    problem_expert_ = std::make_shared<plansys2::ProblemExpertClient>();
+    executor_client_ = std::make_shared<plansys2::ExecutorClient>();
+    // ...
+    // Initializing the robot's world.
+    problem_expert_->addInstance(plansys2::Instance{"tay", "robot"});
+    problem_expert_->addInstance(plansys2::Instance{"garage", "room"});
+    problem_expert_->addPredicate(plansys2::Predicate("(robot_at tay kitchen)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(human_at granny bedroom)"));
+    // ...
+    // Indicating the goal to be achieved.
+    problem_expert_->setGoal(plansys2::Goal("(and(object_at tools bedroom))"));
+    // ...
+    // Executing the plan
+    if (executor_client_->start_plan_execution(plan.value())) {
+      state_ = WORKING;
+    }
+    //...
+    // getting feedback
+    auto feedback = executor_client_->getFeedBack();
+
+    for (const auto & action_feedback : feedback.action_execution_status) {
+      std::cout << "[" << action_feedback.action << " " <<
+      action_feedback.completion * 100.0 << "%]";
+    }
+```
 
 ## Tests
 ### test 1
