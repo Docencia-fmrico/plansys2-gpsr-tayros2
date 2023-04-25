@@ -20,8 +20,8 @@
 ## Table of Contents
 - [Table of Contents](#table-of-contents)
 - [Project Goal](#project-goal)
+- [Package usage and dependencies](#package-usage-and-dependencies)
 - [PDDL](#pddl)
-- [Logic and functionality](#logic-and-functionality)
 - [Behavior Tree diagrams](#behavior-tree-diagram)
 - [Launcher](#launcher)
 - [Tests](#tests)
@@ -29,11 +29,24 @@
 - [Licencia](#licencia)
 
 ## Project Goal
+The aim of this project is to create a ROS2 application that use PlanSys2 to resolve PDDL based planning systems. The project is focus in the resolution of tasks in a 5 roomed-house and the requests that a human ask the robot to do, as it is shown in the above image.
+
+## Package usage and dependencies
+This project requires the [ir_robots](https://github.com/IntelligentRoboticsLabs/ir_robots) repositories, as well as the [br_navigation](https://github.com/fmrico/book_ros2) for the navigation of Tiago.
+
+To use the repository, you will need to follow this steps:
+
+1. Launch the ir_robots simulation launcher:
+
+2. Launch the navigation from the br_navigation launcher:
+
+3. Launch the gpsr-tayros2 launcher:
+
+4. Run the controller node:
+
+### Note: Due to the problems in the updates of the Tiago, you could find some troubles in the navigation launch and using this project repository if you have updated the packages.
 
 ## PDDL
-
-
-## Logic and functionality
 
 In order to solve this task, we need to represent the "robot world" in such a way that a planning algorithm can find an optimal solution to make the robot tidy up the house and assist the human with the tasks they request (such as opening and closing doors or bringing them something they need). To do this, we have used PDDL.
 
@@ -98,13 +111,19 @@ And the use of "high-level" functions that need the execution of some other spef
 
 ### Demonstration
 
-You can see the video demonstration here: [Alternative Link (Youtube)](https://www.youtube.com)
+You can see the video demonstration here:
 
+1. Simple example video #1 using the initial Transport method (organize objects): [Alternative Link (Youtube)](https://www.youtube.com/watch?v=6aOHB-sJ96M)
 
-https://user-images.githubusercontent.com/72991245/220482297-1e9a4d7f-dd42
+https://user-images.githubusercontent.com/72991245/234413060-eea9c13e-176d-4547-beb0-0d763bf78ba0.mp4
 
+2. Complete example video #2 using the Pick & Drop method: [Alternative Link (Youtube)](https://www.youtube.com/watch?v=F57P4S2pAxM&feature=youtu.be)
 
+https://user-images.githubusercontent.com/72991245/234413454-8c0a70c2-16ee-43a5-8b04-d4e07adb2c7e.mp4
 
+3. Example video #3 (Granny requests): [Alternative Link (Youtube)]([Alternative Link (Youtube)](https://www.youtube.com/watch?v=F57P4S2pAxM&feature=youtu.be)
+
+https://user-images.githubusercontent.com/72991245/234413719-7fd676d1-9793-40ab-be9d-def6d1722a16.mp4
 
 ## Behavior Tree Diagram 
 
