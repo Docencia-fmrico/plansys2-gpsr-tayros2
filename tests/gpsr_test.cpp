@@ -136,7 +136,6 @@ TEST(bt_action, open_door_btn)
     finish = tree.rootNode()->executeTick() == BT::NodeStatus::SUCCESS;
     rate.sleep();
   }
-
 }
 
 /* TEST(bt_action, pick_btn)
