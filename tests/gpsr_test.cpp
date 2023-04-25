@@ -32,84 +32,21 @@
 #include "rclcpp_action/rclcpp_action.hpp"
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
 
+#include "plansys2_domain_expert/DomainExpertNode.hpp"
+#include "plansys2_domain_expert/DomainExpertClient.hpp"
+#include "plansys2_problem_expert/ProblemExpertNode.hpp"
+#include "plansys2_problem_expert/ProblemExpertClient.hpp"
+#include "plansys2_planner/PlannerNode.hpp"
+#include "plansys2_planner/PlannerClient.hpp"
+#include "plansys2_executor/ExecutorNode.hpp"
+#include "plansys2_executor/ExecutorClient.hpp"
+
+#include "plansys2_tests/test_action_node.hpp"
+#include "plansys2_tests/execution_logger.hpp"
+
 using namespace std::placeholders;
 using namespace std::chrono_literals;
 
-class VelocitySinkNode : public rclcpp::Node
-{
-public:
-  VelocitySinkNode()
-  : Node("VelocitySink")
-  {
-    vel_sub_ = create_subscription<geometry_msgs::msg::Twist>(
-      "/output_vel", 100, std::bind(&VelocitySinkNode::vel_callback, this, _1));
-  }
-
-  void vel_callback(geometry_msgs::msg::Twist::SharedPtr msg)
-  {
-    vel_msgs_.push_back(*msg);
-  }
-
-  std::list<geometry_msgs::msg::Twist> vel_msgs_;
-
-private:
-  rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr vel_sub_;
-};
-
-class Nav2FakeServer : public rclcpp::Node
-{
-  using NavigateToPose = nav2_msgs::action::NavigateToPose;
-  using GoalHandleNavigateToPose = rclcpp_action::ServerGoalHandle<NavigateToPose>;
-
-public:
-  Nav2FakeServer()
-  : Node("nav2_fake_server_node")
-  {
-  }
-
-  void start_server()
-  {
-    move_action_server_ = rclcpp_action::create_server<NavigateToPose>(
-      shared_from_this(), "navigate_to_pose", std::bind(&Nav2FakeServer::handle_goal, this, _1, _2),
-      std::bind(&Nav2FakeServer::handle_cancel, this, _1),
-      std::bind(&Nav2FakeServer::handle_accepted, this, _1));
-  }
-
-private:
-  rclcpp_action::Server<NavigateToPose>::SharedPtr move_action_server_;
-
-  rclcpp_action::GoalResponse handle_goal(
-    const rclcpp_action::GoalUUID & uuid, std::shared_ptr<const NavigateToPose::Goal> goal)
-  {
-    return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
-  }
-
-  rclcpp_action::CancelResponse handle_cancel(
-    const std::shared_ptr<GoalHandleNavigateToPose> goal_handle)
-  {
-    return rclcpp_action::CancelResponse::ACCEPT;
-  }
-
-  void handle_accepted(const std::shared_ptr<GoalHandleNavigateToPose> goal_handle)
-  {
-    std::thread{std::bind(&Nav2FakeServer::execute, this, _1), goal_handle}.detach();
-  }
-
-  void execute(const std::shared_ptr<GoalHandleNavigateToPose> goal_handle)
-  {
-    auto feedback = std::make_shared<NavigateToPose::Feedback>();
-    auto result = std::make_shared<NavigateToPose::Result>();
-
-    auto start = now();
-
-    while ((now() - start) < 5s) {
-      feedback->distance_remaining = 5.0 - (now() - start).seconds();
-      goal_handle->publish_feedback(feedback);
-    }
-
-    goal_handle->succeed(result);
-  }
-};
 
 TEST(bt_action, open_door_btn)
 {
@@ -137,8 +74,8 @@ TEST(bt_action, open_door_btn)
   auto last_status = BT::NodeStatus::FAILURE;
 
   // Cambiar a 5
-  for (int i = 0 ; i < 10; i++) {
-    last_status = tree.rootNode()->executeTick();
+  for (int i = 0 ; i <= 5; i++) {
+    last_status = tree.OpenDoorNode()->executeTick();
 
     rclcpp::spin_some(node_sink->get_node_base_interface());
     rate.sleep();
@@ -150,58 +87,107 @@ TEST(bt_action, open_door_btn)
 
 TEST(bt_action, move_btn)
 {
-  auto node = rclcpp::Node::make_shared("plansys2_move_bt_node");
-  auto nav2_fake_node = std::make_shared<Nav2FakeServer>();
+  auto test_node = rclcpp::Node::make_shared("test_node");
+  auto domain_node = std::make_shared<plansys2::DomainExpertNode>();
+  auto problem_node = std::make_shared<plansys2::ProblemExpertNode>();
+  auto planner_node = std::make_shared<plansys2::PlannerNode>();
+  auto executor_node = std::make_shared<plansys2::ExecutorNode>();
 
-  nav2_fake_node->start_server();
+  auto domain_client = std::make_shared<plansys2::DomainExpertClient>();
+  auto problem_client = std::make_shared<plansys2::ProblemExpertClient>();
+  auto planner_client = std::make_shared<plansys2::PlannerClient>();
+  auto executor_client = std::make_shared<plansys2::ExecutorClient>();
+
+  auto move_action_node = plansys2_tests::TestAction::make_shared("move");
+
+  auto execution_logger = plansys2_tests::ExecutionLogger::make_shared();
+
+  std::string pkgpath = ament_index_cpp::get_package_share_directory("plansys2_gpsr_tayros2");
+
+  domain_node->set_parameter({"model_file", pkgpath + "/pddl/house_granny_domain.pddl"});
+  problem_node->set_parameter({"model_file", pkgpath + "/pddl/house_granny_domain.pddl"});
+
+  rclcpp::executors::MultiThreadedExecutor exe(rclcpp::ExecutorOptions(), 8);
+
+  exe.add_node(domain_node->get_node_base_interface());
+  exe.add_node(problem_node->get_node_base_interface());
+  exe.add_node(planner_node->get_node_base_interface());
+  exe.add_node(executor_node->get_node_base_interface());
+  exe.add_node(move_action_node->get_node_base_interface());
+  exe.add_node(ask_charge_node->get_node_base_interface());
+  exe.add_node(charge_node->get_node_base_interface());
+  exe.add_node(execution_logger->get_node_base_interface());
 
   bool finish = false;
   std::thread t([&]() {
-      while (!finish) {
-        rclcpp::spin_some(nav2_fake_node);
-      }
+      while (!finish) {exe.spin_some();}
     });
 
-  BT::BehaviorTreeFactory factory;
-  BT::SharedLibrary loader;
+  domain_node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
+  problem_node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
+  planner_node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
+  executor_node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
 
-  factory.registerFromPlugin(loader.getOSName("plansys2_move_bt_node"));
+  {
+    rclcpp::Rate rate(10);
+    auto start = test_node->now();
+    while ((test_node->now() - start).seconds() < 0.5) {
+      rate.sleep();
+    }
+  }
 
-  std::string xml_bt =
-    R"(
-    <root main_tree_to_execute = "MainTree" >
-      <BehaviorTree ID="MainTree">
-          <Move    name="move" goal="{goal}"/>
-      </BehaviorTree>
-    </root>)";
+  domain_node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_ACTIVATE);
+  problem_node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_ACTIVATE);
+  planner_node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_ACTIVATE);
+  executor_node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_ACTIVATE);
 
-  auto blackboard = BT::Blackboard::create();
-  blackboard->set("node", node);
+  {
+    rclcpp::Rate rate(10);
+    auto start = test_node->now();
+    while ((test_node->now() - start).seconds() < 0.5) {
+      rate.sleep();
+    }
+  }
 
-  geometry_msgs::msg::PoseStamped goal;
+  problem_client->addInstance(plansys2::Instance("tay", "robot"));
 
-  // Create the goal
-  goal.header.frame_id = "map";
-  goal.pose.orientation.w = 1.0;
-  goal.pose.position.x = 0.0;
-  goal.pose.position.y = 0.0;
+  problem_client->addInstance(plansys2::Instance("entrance", "room"));
+  problem_client->addInstance(plansys2::Instance("kitchen", "room"));
+ 
+  problem_client->addPredicate(plansys2::Predicate("(connected entrance kitchen)"));
+  problem_client->addPredicate(plansys2::Predicate("(connected kitchen entrance)"));
 
-  blackboard->set("goal", goal);
+  problem_client->addPredicate(plansys2::Predicate("(robot_at tay entrance)"));
 
-  BT::Tree tree = factory.createTreeFromText(xml_bt, blackboard);
+  problem_client->setGoal(plansys2::Goal("(and(robot_at tay kitchen))"));
 
-  rclcpp::Rate rate(10);
+  auto domain = domain_client->getDomain();
+  auto problem = problem_client->getProblem();
+  auto plan = planner_client->getPlan(domain, problem);
 
-  auto last_status = BT::NodeStatus::FAILURE;
-  while (!finish && rclcpp::ok()) {
-    last_status = tree.rootNode()->executeTick();
-    finish = last_status != BT::NodeStatus::RUNNING;
+  ASSERT_FALSE(domain.empty());
+  ASSERT_FALSE(problem.empty());
+  ASSERT_TRUE(plan.has_value());
+
+  ASSERT_TRUE(executor_client->start_plan_execution(plan.value()));
+
+  rclcpp::Rate rate(5);
+  while (executor_client->execute_and_check_plan()) {
     rate.sleep();
   }
 
-  t.join();
+  auto result = executor_client->getResult();
 
-  ASSERT_EQ(last_status, BT::NodeStatus::SUCCESS);
+  ASSERT_TRUE(result.value().success);
+
+ // ASSERT_TRUE(
+ //   execution_logger->sorted(
+ // {
+ //   "(askcharge leia entrance chargingroom)"
+ // }));
+
+  finish = true;
+  t.join();
 }
 
 
