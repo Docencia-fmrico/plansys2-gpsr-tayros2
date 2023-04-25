@@ -100,7 +100,7 @@ public:
     problem_expert_->addPredicate(plansys2::Predicate("(close doorD)"));
     problem_expert_->addPredicate(plansys2::Predicate("(no_prio_task_remaining"));
     problem_expert_->addPredicate(plansys2::Predicate("(pick_request granny tools)"));
-    
+
   }
 
   void step()
@@ -122,7 +122,7 @@ public:
             break;
           }
           // este else esta solo con motivos de debug
-          else{
+          else {
             state_ = WORKING;
           }
 
@@ -132,22 +132,22 @@ public:
           }
         }
         break;
-        case WORKING:
-          {
-            auto feedback = executor_client_->getFeedBack();
+      case WORKING:
+        {
+          auto feedback = executor_client_->getFeedBack();
 
-            for (const auto & action_feedback : feedback.action_execution_status) {
-              std::cout << "[" << action_feedback.action << " " <<
-                action_feedback.completion * 100.0 << "%]";
-            }
-            std::cout << std::endl;
+          for (const auto & action_feedback : feedback.action_execution_status) {
+            std::cout << "[" << action_feedback.action << " " <<
+              action_feedback.completion * 100.0 << "%]";
+          }
+          std::cout << std::endl;
 
-            if (!executor_client_->execute_and_check_plan() && executor_client_->getResult()) {
-              if (executor_client_->getResult().value().success) {
-                std::cout << "Successful finished " << std::endl;
-              }
+          if (!executor_client_->execute_and_check_plan() && executor_client_->getResult()) {
+            if (executor_client_->getResult().value().success) {
+              std::cout << "Successful finished " << std::endl;
             }
           }
+        }
         break;
     }
   }
