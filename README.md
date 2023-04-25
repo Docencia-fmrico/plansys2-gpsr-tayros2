@@ -126,7 +126,7 @@ https://user-images.githubusercontent.com/72991245/234413060-eea9c13e-176d-4547-
 
 https://user-images.githubusercontent.com/72991245/234413454-8c0a70c2-16ee-43a5-8b04-d4e07adb2c7e.mp4
 
-3. Example video #3 (Granny requests): [Alternative Link (Youtube)]([Alternative Link (Youtube)](https://www.youtube.com/watch?v=F57P4S2pAxM&feature=youtu.be)
+3. Example video #3 (Granny requests): [Alternative Link (Youtube)](https://www.youtube.com/watch?v=F57P4S2pAxM&feature=youtu.be)
 
 https://user-images.githubusercontent.com/72991245/234413719-7fd676d1-9793-40ab-be9d-def6d1722a16.mp4
 
