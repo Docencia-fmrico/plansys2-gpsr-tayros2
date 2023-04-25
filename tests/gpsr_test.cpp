@@ -62,7 +62,9 @@ TEST(bt_action, open_door_btn)
   auto last_status = BT::NodeStatus::FAILURE;
 
   // Cambiar a 5
-  for (int i = 0 ; i <= 5; i++) {
+  auto start = now();
+
+  while ((now() - start) < 5s) {
     last_status = tree.OpenDoorNode()->executeTick();
 
     rclcpp::spin_some(node_sink->get_node_base_interface());
