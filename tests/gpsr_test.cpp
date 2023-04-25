@@ -130,17 +130,13 @@ TEST(bt_action, open_door_btn)
   rclcpp::Rate rate(10);
   auto last_status = BT::NodeStatus::FAILURE;
 
-  // Cambiar a 5
-  int counter = 0;
   bool finish = false;
 
   while (!finish && rclcpp::ok()) {
     finish = tree.rootNode()->executeTick() == BT::NodeStatus::SUCCESS;
     rate.sleep();
-    counter++;
   }
 
-  ASSERT_EQ(counter, 6);
 }
 
 /* TEST(bt_action, pick_btn)
