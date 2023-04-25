@@ -32,18 +32,6 @@
 #include "rclcpp_action/rclcpp_action.hpp"
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
 
-#include "plansys2_domain_expert/DomainExpertNode.hpp"
-#include "plansys2_domain_expert/DomainExpertClient.hpp"
-#include "plansys2_problem_expert/ProblemExpertNode.hpp"
-#include "plansys2_problem_expert/ProblemExpertClient.hpp"
-#include "plansys2_planner/PlannerNode.hpp"
-#include "plansys2_planner/PlannerClient.hpp"
-#include "plansys2_executor/ExecutorNode.hpp"
-#include "plansys2_executor/ExecutorClient.hpp"
-
-#include "plansys2_tests/test_action_node.hpp"
-#include "plansys2_tests/execution_logger.hpp"
-
 using namespace std::placeholders;
 using namespace std::chrono_literals;
 
@@ -177,14 +165,7 @@ TEST(bt_action, move_btn)
   }
 
   auto result = executor_client->getResult();
-
   ASSERT_TRUE(result.value().success);
-
- // ASSERT_TRUE(
- //   execution_logger->sorted(
- // {
- //   "(askcharge leia entrance chargingroom)"
- // }));
 
   finish = true;
   t.join();
