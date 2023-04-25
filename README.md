@@ -157,6 +157,7 @@ gpsr_controller_node.cpp:
       action_feedback.completion * 100.0 << "%]";
     }
 ```
+-----------------------------------------------------------------------
 
 ## Tests
 ### test 1
