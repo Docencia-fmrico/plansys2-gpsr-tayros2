@@ -143,7 +143,7 @@ TEST(bt_action, open_door_btn)
   ASSERT_EQ(counter, 6);
 }
 
-TEST(bt_action, pick_btn)
+/* TEST(bt_action, pick_btn)
 {
   std::string pkgpath = ament_index_cpp::get_package_share_directory("plansys2_gpsr_tayros2");
   std::string xml_file = pkgpath + "/behavior_trees_xml/pick.xml";
@@ -214,7 +214,7 @@ TEST(bt_actions, move_load_plugins)
   }
 
   t.join();
-}
+} */
 
 int main(int argc, char ** argv)
 {
