@@ -8,6 +8,7 @@
 
 <h3 align="center"> PlanSys2 </h3>
 
+
 <div align="center">
 <img width=100px src="https://img.shields.io/badge/status-finished-brightgreen" alt="explode"></a>
 <img width=100px src="https://img.shields.io/badge/license-Apache-orange" alt="explode"></a>
@@ -255,3 +256,4 @@ This significantly increases the time required to run tests as the package needs
 
 ## Licencia 
 <a rel="license" href="https://www.apache.org/licenses/LICENSE-2.0"><img alt="Apache License" style="border-width:0" src="https://www.apache.org/img/asf-estd-1999-logo.jpg" /></a><br/>(TayROS2) </a><br/>This work is licensed under a <a rel="license" href="https://www.apache.org/licenses/LICENSE-2.0">Apache license 2.0
+
