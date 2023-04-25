@@ -15,3 +15,9 @@ Puntuación (sobre 10):
 * +2 Readme.md bien documentado con videos.
 * +2 CI con Test de los nodos BT
 * -3 Warnings o que no pase los tests.
+
+## Lanzamiento del comportamiento
+- ros2 launch ir_robots simulation.launch
+- ros2 launch br2_navigation tiago_navigation.launch.py
+- ros2 launch plansys2_gpsr_tayros2 plansys2_gpsr.launch.py
+- ros2 run plansys2_gpsr_tayros2 gpsr_controller_node
