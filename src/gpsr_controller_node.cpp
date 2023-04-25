@@ -72,8 +72,10 @@ public:
     problem_expert_->addPredicate(plansys2::Predicate("(object_at clothes living_room)"));
     problem_expert_->addPredicate(plansys2::Predicate("(object_at silverware living_room)"));
     problem_expert_->addPredicate(plansys2::Predicate("(object_at towel bathroom)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door kitchen bathroom doora)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door bathroom kitchen doora)"));
+    problem_expert_->addPredicate(plansys2::Predicate(
+      "(connected_by_door kitchen bathroom doora)"));
+    problem_expert_->addPredicate(plansys2::Predicate(
+      "(connected_by_door bathroom kitchen doora)"));
     problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door kitchen bedroom doorb)"));
     problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door bedroom kitchen doorb)"));
     problem_expert_->addPredicate(
@@ -123,9 +125,7 @@ public:
             std::cout << "Could not find plan to reach goal " <<
               parser::pddl::toString(problem_expert_->getGoal()) << std::endl;
             break;
-          }
-          // este else esta solo con motivos de debug
-          else {
+          } else {
             state_ = WORKING;
           }
 
