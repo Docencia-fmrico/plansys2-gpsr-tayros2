@@ -95,7 +95,7 @@ public:
     problem_expert_->addPredicate(plansys2::Predicate("(connected kitchen living_room)"));
     problem_expert_->addPredicate(plansys2::Predicate("(connected living_room kitchen)"));
     problem_expert_->addPredicate(plansys2::Predicate("(open doora)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(open doorb)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(close doorb)"));
     problem_expert_->addPredicate(plansys2::Predicate("(open doorc)"));
     problem_expert_->addPredicate(plansys2::Predicate("(open doord)"));
     problem_expert_->addPredicate(plansys2::Predicate("(no_prio_task_remaining"));

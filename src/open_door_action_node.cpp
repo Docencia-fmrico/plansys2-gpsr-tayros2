@@ -28,7 +28,7 @@ class OpenDoorAction : public plansys2::ActionExecutorClient
 {
 public:
   OpenDoorAction()
-  : plansys2::ActionExecutorClient("open-door", 250ms)
+  : plansys2::ActionExecutorClient("open_door", 250ms)
   {
     progress_ = 0.0;
   }
@@ -59,7 +59,7 @@ int main(int argc, char ** argv)
   rclcpp::init(argc, argv);
   auto node = std::make_shared<OpenDoorAction>();
 
-  node->set_parameter(rclcpp::Parameter("action_name", "open-door"));
+  node->set_parameter(rclcpp::Parameter("action_name", "open_door"));
   node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
 
   rclcpp::spin(node->get_node_base_interface());

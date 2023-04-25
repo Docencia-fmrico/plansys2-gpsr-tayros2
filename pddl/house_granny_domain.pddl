@@ -29,7 +29,7 @@
     (no_prio_task_remaining)
   )
 
-  (:durative-action open-door
+  (:durative-action open_door
     :parameters (?r - robot ?l1 ?l2 - location ?d - door)
     :duration (= ?duration 1)
     :condition (and
@@ -43,7 +43,7 @@
     )
   )
 
-  (:durative-action close-door
+  (:durative-action close_door
     :parameters (?r - robot ?l1 ?l2 - location ?d - door)
     :duration (= ?duration 1)
     :condition (and
