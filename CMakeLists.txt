@@ -35,15 +35,6 @@ set(dependencies
 
 include_directories(include)
 
-add_executable(close_door_action_node src/close_door_action_node.cpp)
-ament_target_dependencies(close_door_action_node ${dependencies})
-
-add_executable(drop_action_node src/drop_action_node.cpp)
-ament_target_dependencies(drop_action_node ${dependencies})
-
-add_executable(pick_prio_action_node src/pick_prio_action_node.cpp)
-ament_target_dependencies(pick_prio_action_node ${dependencies})
-
 add_executable(gpsr_controller_node src/gpsr_controller_node.cpp)
 ament_target_dependencies(gpsr_controller_node ${dependencies})
 
@@ -53,6 +44,9 @@ ament_target_dependencies(move_action_node ${dependencies})
 add_executable(pick_request_attend_node src/pick_request_attend_action_node.cpp)
 ament_target_dependencies(pick_request_attend_node ${dependencies})
 
+add_executable(open_door_action_node src/open_door_action_node.cpp)
+ament_target_dependencies(open_door_action_node ${dependencies})
+
 add_library(plansys2_closedoor_bt_node SHARED src/behavior_tree_nodes/CloseDoor.cpp)
 list(APPEND plugin_libs plansys2_closedoor_bt_node)
 
@@ -61,9 +55,6 @@ list(APPEND plugin_libs plansys2_closegripper_bt_node)
 
 add_library(plansys2_opengripper_bt_node SHARED src/behavior_tree_nodes/OpenGripper.cpp)
 list(APPEND plugin_libs plansys2_opengripper_bt_node)
-
-add_library(plansys2_movebydoor_bt_node SHARED src/behavior_tree_nodes/MoveByDoor.cpp)
-list(APPEND plugin_libs plansys2_movebydoor_bt_node)
 
 add_library(plansys2_opendoor_bt_node SHARED src/behavior_tree_nodes/OpenDoor.cpp)
 list(APPEND plugin_libs plansys2_opendoor_bt_node)
@@ -83,12 +74,10 @@ endforeach()
 install(DIRECTORY launch pddl behavior_trees_xml config DESTINATION share/${PROJECT_NAME})
 
 install(TARGETS
-  close_door_action_node
-  pick_prio_action_node
-  drop_action_node
   gpsr_controller_node
   move_action_node
   pick_request_attend_node
+  open_door_action_node
   ${plugin_libs}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib

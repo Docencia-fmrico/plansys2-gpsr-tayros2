@@ -51,47 +51,13 @@ def generate_launch_description():
        output='screen',
        parameters=[])
 
-    #open_door_cmd = Node(
-    #    package='plansys2_gpsr_tayros2',
-    #    executable='open_door_action_node',
-    #    name='open_door_action_node',
-    #    namespace=namespace,
-    #    output='screen',
-    #    parameters=[])
-
-    # move_by_door_cmd = Node(
-    #     package='plansys2_gpsr_tayros2',
-    #     executable='move_by_door_action_node',
-    #     name='move_by_door_action_node',
-    #     namespace=namespace,
-    #     output='screen',
-    #     parameters=[])
-    
-    # pick_cmd = Node(
-    #     package='plansys2_gpsr_tayros2',
-    #     executable='pick_action_node',
-    #     name='pick_action_node',
-    #     namespace=namespace,
-    #     output='screen',
-    #     parameters=[])
-    
-    #pick_prio_cmd = Node(
-    #    package='plansys2_gpsr_tayros2',
-    #    executable='pick_prio_action_node',
-    #    name='pick_prio_action_node',
-    #    namespace=namespace,
-    #    output='screen',
-    #    parameters=[])
-    
-    #drop_cmd = Node(
-    #    package='plansys2_gpsr_tayros2',
-    #    executable='drop_action_node',
-    #    name='drop_action_node',
-    #    namespace=namespace,
-    #    output='screen',
-    #    parameters=[])
-
-    # Both are the same action but 1 has to be done first
+    open_door_cmd = Node(
+       package='plansys2_gpsr_tayros2',
+       executable='open_door_action_node',
+       name='open_door_action_node',
+       namespace=namespace,
+       output='screen',
+       parameters=[])
 
     move_without_door_cmd = Node(
         package='plansys2_bt_actions',
@@ -125,22 +91,7 @@ def generate_launch_description():
             }
         ])
     
-    # transport_prio_cmd = Node(
-    #     package='plansys2_bt_actions',
-    #     executable='bt_action_node',
-    #     name='transport_prio',
-    #     namespace=namespace,
-    #     output='screen',
-    #     parameters=[
-    #         example_dir + '/config/params.yaml',
-    #         {
-    #         'action_name': 'prio_transport',
-    #         'publisher_port': 1680,
-    #         'server_port': 1681,
-    #         'bt_xml_file': example_dir + '/behavior_trees_xml/transport.xml'
-    #         }
-    #     ])   
-        
+    
     pick_cmd = Node(
         package='plansys2_bt_actions',
         executable='bt_action_node',
@@ -172,7 +123,8 @@ def generate_launch_description():
             'bt_xml_file': example_dir + '/behavior_trees_xml/drop.xml'
             }
         ])
-     
+    
+    #-- Only if no doors map
     # transport_cmd = Node(
     #     package='plansys2_bt_actions',
     #     executable='bt_action_node',
@@ -195,18 +147,12 @@ def generate_launch_description():
 
     # Declare the launch options
     ld.add_action(plansys2_cmd)
-#    ld.add_action(close_door_cmd)
-    # ld.add_action(open_door_cmd)
-    # ld.add_action(move_by_door_cmd)
-    # ld.add_action(pick_cmd)
-    # ld.add_action(pick_prio_cmd)
-    # ld.add_action(drop_cmd)
+    ld.add_action(open_door_cmd)
     ld.add_action(move_without_door_cmd)
     ld.add_action(move_with_door_cmd)
     ld.add_action(pick_cmd)
     ld.add_action(drop_cmd)
     ld.add_action(pick_request_attend_cmd)
     # ld.add_action(transport_cmd)
-    # ld.add_action(transport_prio_cmd)
 
     return ld

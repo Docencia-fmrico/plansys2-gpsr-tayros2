@@ -24,11 +24,11 @@ using namespace std::chrono_literals;
 
 const float ACTION_TIME = 1.0;
 
-class AssembleAction : public plansys2::ActionExecutorClient
+class OpenDoorAction : public plansys2::ActionExecutorClient
 {
 public:
-  AssembleAction()
-  : plansys2::ActionExecutorClient("drop", 250ms)
+  OpenDoorAction()
+  : plansys2::ActionExecutorClient("open-door", 250ms)
   {
     progress_ = 0.0;
   }
@@ -37,17 +37,17 @@ private:
   void do_work()
   {
     if (progress_ < ACTION_TIME) {
-      progress_ += ACTION_TIME;
-      send_feedback(progress_, "drop running");
+      progress_ += 0.02;
+      send_feedback(progress_, "Closing door...");
     } else {
-      finish(true, ACTION_TIME, "drop completed");
+      finish(true, ACTION_TIME, "Door closed");
 
       progress_ = 0.0;
       std::cout << std::endl;
     }
 
     std::cout << "\r\e[K" << std::flush;
-    std::cout << "drop ... [" << std::min(100.0, progress_ * 100.0) << "%]  " <<
+    std::cout << "Closing door... [" << std::min(100.0, progress_ * 100.0) << "%]  " <<
       std::flush;
   }
 
@@ -57,9 +57,9 @@ private:
 int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
-  auto node = std::make_shared<AssembleAction>();
+  auto node = std::make_shared<OpenDoorAction>();
 
-  node->set_parameter(rclcpp::Parameter("action_name", "drop"));
+  node->set_parameter(rclcpp::Parameter("action_name", "open-door"));
   node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
 
   rclcpp::spin(node->get_node_base_interface());
