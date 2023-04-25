@@ -65,7 +65,7 @@ public:
     problem_expert_->addInstance(plansys2::Instance{"granny", "human"});
 
     problem_expert_->addPredicate(plansys2::Predicate("(robot_at tay kitchen)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(human_at granny bedroom)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(human_at granny garage)"));
     problem_expert_->addPredicate(plansys2::Predicate("(gripper_at robot_gripper tay)"));
     problem_expert_->addPredicate(plansys2::Predicate("(gripper_free robot_gripper)"));
     problem_expert_->addPredicate(plansys2::Predicate("(object_at tools kitchen)"));
@@ -95,9 +95,9 @@ public:
     problem_expert_->addPredicate(plansys2::Predicate("(connected kitchen living_room)"));
     problem_expert_->addPredicate(plansys2::Predicate("(connected living_room kitchen)"));
     problem_expert_->addPredicate(plansys2::Predicate("(open doora)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(close doorb)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(close doorc)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(close doord)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(open doorb)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(open doorc)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(open doord)"));
     problem_expert_->addPredicate(plansys2::Predicate("(no_prio_task_remaining"));
     problem_expert_->addPredicate(plansys2::Predicate("(pick_request granny tools)"));
     
@@ -109,7 +109,7 @@ public:
       case STARTING:
         {
           // Set the goal for next state
-          problem_expert_->setGoal(plansys2::Goal("(and(object_at clothes bedroom))"));
+          problem_expert_->setGoal(plansys2::Goal("(and(human_attended granny))"));
 
           // Compute the plan
           auto domain = domain_expert_->getDomain();

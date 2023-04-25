@@ -10,10 +10,12 @@
   (:predicates
     (robot_at ?r - robot ?l - location)
     (object_at ?u - util ?l - location)
+    (move_object ?u -util ?l - location)
     (human_at ?h - human ?l - location)
 
     (gripper_free ?g - gripper)
     (gripper_at ?g - gripper ?r - robot)
+    (robot_carry ?r - robot ?g - gripper ?u - util)
     (connected_by_door ?l1 ?l2 - location ?d - door)
     (connected ?l1 ?l2 - location)
     (open ?d - door)
@@ -83,69 +85,70 @@
     )
   )
 
-
-  (:durative-action prio_transport
-    :parameters (?r - robot ?u - util ?l1 ?l2 - location ?g - gripper ?h - human)
-    :duration ( = ?duration 5)
+  (:durative-action pick
+    :parameters (?u - util ?l - location ?r - robot ?g - gripper)
+    :duration (= ?duration 1)
     :condition (and
-
-        (at start(robot_at ?r ?l1))
-        (at start(gripper_at ?g ?r))
-        (at start(gripper_free ?g))
-        (at start(object_at ?u ?l1))
-
-        (over all(pick_request ?h ?u))
-
+      (at start(gripper_at ?g ?r))
+      (at start(object_at ?u ?l))
+      (at start(gripper_free ?g))
+      (over all(robot_at ?r ?l))
+      (over all(no_prio_task_remaining))
     )
     :effect (and
-        (at start(not(robot_at ?r ?l1)))
-        (at end(robot_at ?r ?l2))
-
-        (at start(not(object_at ?u ?l1)))
-        (at end(object_at ?u ?l2))
-
-        (at start(not (gripper_free ?g)))
-        (at end(gripper_free ?g))
-
-        (at end(no_prio_task_remaining))
+      ;importantisimo indicar que el gancho deja de estar libre cuand empieza la accion
+      (at start(not (gripper_free ?g)))
+      (at end(not (object_at ?u ?l)))
+      (at end(robot_carry ?r ?g ?u))
     )
-)
+  )
 
-  (:durative-action transport
-    :parameters (?r - robot ?u - util ?l1 ?l2 - location ?g - gripper)
-    :duration ( = ?duration 5)
-    :condition (and
-
-        (at start(robot_at ?r ?l1))
-        (at start(gripper_at ?g ?r))
-        (at start(gripper_free ?g))
-        (at start(object_at ?u ?l1))
-
-        (over all(no_prio_task_remaining))
-
-    )
-    :effect (and
-        (at start(not(robot_at ?r ?l1)))
-        (at end(robot_at ?r ?l2))
-
-        (at start(not(object_at ?u ?l1)))
-        (at end(object_at ?u ?l2))
-
-        (at start(not (gripper_free ?g)))
-        (at end(gripper_free ?g))
-    )
-)
-
-  (:action attend_pick_request
+  (:durative-action pick_prio
     :parameters (?u - util ?l - location ?r - robot ?g - gripper ?h - human)
-    :precondition (and
-      (pick_request ?h ?u)
-      (object_at ?u ?l)
-      (human_at ?h ?l)
+    :duration (= ?duration 1)
+    :condition (and
+      (at start(gripper_at ?g ?r))
+      (at start(object_at ?u ?l))
+      (at start(gripper_free ?g))
+      (over all(robot_at ?r ?l))
+      (over all(pick_request ?h ?u))
     )
     :effect (and
-      (not (pick_request ?h ?u))
-      (human_attended ?h)
+      ;importe indicar que el gancho deja de estar libre cuando empieza la acción
+      ;para que solo coja un objeto
+      (at start(not (gripper_free ?g)))
+      (at end(not (object_at ?u ?l)))
+      (at end(robot_carry ?r ?g ?u))
+      (at end(no_prio_task_remaining))
+    )
+  )
+
+  (:durative-action drop
+    :parameters (?u - util ?l - location ?r - robot ?g - gripper)
+    :duration (= ?duration 1)
+    :condition (and
+      (at start(gripper_at ?g ?r))
+      (at start(robot_carry ?r ?g ?u))
+      (over all(robot_at ?r ?l))
+    )
+    :effect (and
+      (at start(not (robot_carry ?r ?g ?u)))
+      (at end(gripper_free ?g))
+      (at end(object_at ?u ?l))
+    )
+  )
+
+  (:durative-action attend_pick_request
+    :parameters (?u - util ?l - location ?r - robot ?g - gripper ?h - human)
+    :duration (= ?duration 1)
+    :condition (and
+      (at start(pick_request ?h ?u))
+      (at start(object_at ?u ?l))
+      (over all(human_at ?h ?l))
+    )
+    :effect (and
+      (at start(not (pick_request ?h ?u)))
+      (at end(human_attended ?h)))
     )
   )
 
@@ -175,4 +178,14 @@
     )
   )
 
+  (:action organize_object
+    :parameters (?h - human ?u - util ?l - location)
+    :precondition (and
+      (human_attended ?h)
+      (object_at ?u ?l)
+    )
+    :effect (and
+      (move_object ?u ?l)
+    )
+  )
 )

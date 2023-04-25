@@ -50,6 +50,9 @@ ament_target_dependencies(gpsr_controller_node ${dependencies})
 add_executable(move_action_node src/move_action_node.cpp)
 ament_target_dependencies(move_action_node ${dependencies})
 
+add_executable(pick_request_attend_node src/pick_request_attend_action_node.cpp)
+ament_target_dependencies(pick_request_attend_node ${dependencies})
+
 add_library(plansys2_closedoor_bt_node SHARED src/behavior_tree_nodes/CloseDoor.cpp)
 list(APPEND plugin_libs plansys2_closedoor_bt_node)
 
@@ -85,6 +88,7 @@ install(TARGETS
   drop_action_node
   gpsr_controller_node
   move_action_node
+  pick_request_attend_node
   ${plugin_libs}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
