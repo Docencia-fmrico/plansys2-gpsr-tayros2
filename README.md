@@ -116,10 +116,26 @@ You can see the Behaviour Tree diagram made in **Groot**:
 
 ## Launcher
 
------------------------------------------------------------------------
-launch.py:
-``` python
+To launch all the action nodes and the bt nodes, a launcher has been implemented which also serves to connect the different nodes with their configuration parameter file (/config/params.yaml) and the bt nodes with their respective trees (.xml).
 
+-----------------------------------------------------------------------
+plansys2_gpsr.launch.py(snippet):
+``` python
+move_without_door_cmd = Node(
+    package='plansys2_bt_actions',
+    executable='bt_action_node',
+    name='move_wod',
+    namespace=namespace,
+    output='screen',
+    parameters=[
+        example_dir + '/config/params.yaml',
+        {
+        'action_name': 'move_without_door',
+        'publisher_port': 1676,
+        'server_port': 1677,
+        'bt_xml_file': example_dir + '/behavior_trees_xml/move.xml'
+        }
+    ])
 ```
 -----------------------------------------------------------------------
 
@@ -153,8 +169,14 @@ gpsr_controller_node.cpp:
     auto feedback = executor_client_->getFeedBack();
 
     for (const auto & action_feedback : feedback.action_execution_status) {
-      std::cout << "[" << action_feedback.action << " " <<
-      action_feedback.completion * 100.0 << "%]";
+      if (action_feedback.completion) {
+        std::cout << "[" << action_feedback.action << " " <<
+        "SUCCESS" << "]";
+      }
+      else {
+        std::cout << "[" << action_feedback.action << " " <<
+        "RUNNING..." << "]";
+      }
     }
 ```
 -----------------------------------------------------------------------
