@@ -33,12 +33,75 @@
 #include "rclcpp_action/rclcpp_action.hpp"
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
 
-#include "../include/CloseGripper.hpp"
-#include "../include/OpenGripper.hpp"
-#include "../include/Move.hpp"
+#include "/include/CloseGripper.hpp"
+#include "/include/OpenGripper.hpp"
+#include "/include/Move.hpp"
 
 using namespace std::placeholders;
 using namespace std::chrono_literals;
+
+class MoveServer : public rclcpp::Node
+{
+  using Fibonacci = test_msgs::action::Fibonacci;
+  using GoalHandleFibonacci = rclcpp_action::ServerGoalHandle<Fibonacci>;
+
+public:
+  MoveServer()
+  : Node("move_server") {}
+
+  void start_server()
+  {
+    move_action_server_ = rclcpp_action::create_server<Fibonacci>(
+      shared_from_this(),
+      "move",
+      std::bind(&MoveServer::handle_goal, this, _1, _2),
+      std::bind(&MoveServer::handle_cancel, this, _1),
+      std::bind(&MoveServer::handle_accepted, this, _1));
+  }
+
+private:
+  rclcpp_action::Server<Fibonacci>::SharedPtr move_action_server_;
+
+  rclcpp_action::GoalResponse handle_goal(
+    const rclcpp_action::GoalUUID & uuid,
+    std::shared_ptr<const Fibonacci::Goal> goal)
+  {
+    return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
+  }
+
+  rclcpp_action::CancelResponse handle_cancel(
+    const std::shared_ptr<GoalHandleFibonacci> goal_handle)
+  {
+    cancelled_ = true;
+    return rclcpp_action::CancelResponse::ACCEPT;
+  }
+
+  void handle_accepted(const std::shared_ptr<GoalHandleFibonacci> goal_handle)
+  {
+    std::thread{std::bind(&MoveServer::execute, this, _1), goal_handle}.detach();
+  }
+
+  void execute(const std::shared_ptr<GoalHandleFibonacci> goal_handle)
+  {
+    auto feedback = std::make_shared<Fibonacci::Feedback>();
+
+    int counter = 0;
+    rclcpp::Rate rate(10);
+    while (rclcpp::ok() && counter++ < 50 && !cancelled_) {  // 5 secs
+      goal_handle->publish_feedback(feedback);
+      rate.sleep();
+    }
+
+    if (!cancelled_) {
+      auto result = std::make_shared<Fibonacci::Result>();
+
+      result->sequence.push_back(4);
+      goal_handle->succeed(result);
+    }
+  }
+
+  bool cancelled_ {false};
+};
 
 
 TEST(bt_action, open_door_btn)
@@ -80,21 +143,20 @@ TEST(bt_action, open_door_btn)
   ASSERT_EQ(counter, 6);
 }
 
-
-TEST(bt_action, move_btn)
+TEST(bt_action, pick_btn)
 {
-  std::string pkgpath = ament_index_cpp::get_package_share_directory("plansys2_bt_actions");
-  std::string xml_file = pkgpath + "/test/behavior_tree/assemble.xml";
+  std::string pkgpath = ament_index_cpp::get_package_share_directory("plansys2_gpsr_tayros2");
+  std::string xml_file = pkgpath + "/behavior_trees_xml/pick.xml";
 
   std::vector<std::string> plugins = {
-    "plansys2_close_gripper_bt_node", "plansys2_open_gripper_bt_node"};
+    "plansys2_opengripper_bt_node", "plansys2_closegripper_bt_node"};
 
-  auto bt_action = std::make_shared<plansys2::BTAction>("assemble", 100ms);
+  auto bt_action = std::make_shared<plansys2::BTAction>("pcik", 100ms);
 
   auto lc_node = rclcpp_lifecycle::LifecycleNode::make_shared("test_node");
-  auto action_client = plansys2::ActionExecutor::make_shared("(assemble r2d2 z p1 p2 p3)", lc_node);
+  auto action_client = plansys2::ActionExecutor::make_shared("(pick u l r g)", lc_node);
 
-  bt_action->set_parameter(rclcpp::Parameter("action_name", "assemble"));
+  bt_action->set_parameter(rclcpp::Parameter("action_name", "pcik"));
   bt_action->set_parameter(rclcpp::Parameter("bt_xml_file", xml_file));
   bt_action->set_parameter(rclcpp::Parameter("plugins", plugins));
 
@@ -119,6 +181,40 @@ TEST(bt_action, move_btn)
 }
 
 
+TEST(bt_actions, move_load_plugins)
+{
+  auto node = rclcpp::Node::make_shared("load_plugins_node");
+  auto move_server_node = std::make_shared<MoveServer>();
+  move_server_node->start_server();
+
+  bool finish = false;
+  std::thread t([&]() {
+      while (!finish) {rclcpp::spin_some(move_server_node);}
+    });
+
+  BT::BehaviorTreeFactory factory;
+  BT::SharedLibrary loader;
+
+  factory.registerFromPlugin(loader.getOSName("plansys2_move_bt_test_node"));
+
+  std::string pkgpath = ament_index_cpp::get_package_share_directory("plansys2_gpsr_tayros2");
+  std::string xml_file = pkgpath + "/behavior_trees_xml/move.xml";
+
+  auto blackboard = BT::Blackboard::create();
+  blackboard->set("node", node);
+  BT::Tree tree = factory.createTreeFromFile(xml_file, blackboard);
+
+  rclcpp::Rate rate(10);
+
+  int counter = 0;
+  while (!finish && rclcpp::ok()) {
+    finish = tree.rootNode()->executeTick() == BT::NodeStatus::SUCCESS;
+    counter++;
+    rate.sleep();
+  }
+
+  t.join();
+}
 
 int main(int argc, char ** argv)
 {
