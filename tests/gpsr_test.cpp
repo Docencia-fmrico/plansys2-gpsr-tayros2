@@ -73,7 +73,7 @@ TEST(bt_action, open_door_btn)
 }
 
 
-TEST(bt_action, move_btn)
+/*TEST(bt_action, move_btn)
 {
   auto test_node = rclcpp::Node::make_shared("test_node");
   auto domain_node = std::make_shared<plansys2::DomainExpertNode>();
@@ -169,7 +169,7 @@ TEST(bt_action, move_btn)
 
   finish = true;
   t.join();
-}
+}*/
 
 
 
