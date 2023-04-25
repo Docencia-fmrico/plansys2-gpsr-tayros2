@@ -157,7 +157,7 @@ def generate_launch_description():
             'bt_xml_file': example_dir + '/behavior_trees_xml/transport.xml'
             }
         ])
-
+        
    
     ld = LaunchDescription()
     ld.add_action(declare_namespace_cmd)

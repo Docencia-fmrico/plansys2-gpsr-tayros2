@@ -53,10 +53,10 @@ public:
     problem_expert_->addInstance(plansys2::Instance{"bedroom", "room"});
     problem_expert_->addInstance(plansys2::Instance{"kitchen", "room"});
     problem_expert_->addInstance(plansys2::Instance{"living_room", "room"});
-    problem_expert_->addInstance(plansys2::Instance{"doorA", "door"});
-    problem_expert_->addInstance(plansys2::Instance{"doorB", "door"});
-    problem_expert_->addInstance(plansys2::Instance{"doorC", "door"});
-    problem_expert_->addInstance(plansys2::Instance{"doorD", "door"});
+    problem_expert_->addInstance(plansys2::Instance{"doora", "door"});
+    problem_expert_->addInstance(plansys2::Instance{"doorb", "door"});
+    problem_expert_->addInstance(plansys2::Instance{"doorc", "door"});
+    problem_expert_->addInstance(plansys2::Instance{"doord", "door"});
     problem_expert_->addInstance(plansys2::Instance{"tools", "util"});
     problem_expert_->addInstance(plansys2::Instance{"clothes", "util"});
     problem_expert_->addInstance(plansys2::Instance{"silverware", "util"});
@@ -71,33 +71,33 @@ public:
     problem_expert_->addPredicate(plansys2::Predicate("(object_at tools kitchen)"));
     problem_expert_->addPredicate(plansys2::Predicate("(object_at clothes living_room)"));
     problem_expert_->addPredicate(plansys2::Predicate("(object_at silverware living_room)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(object_at towel garage)"));
-    // problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door kitchen bathroom doorA)"));
-    // problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door bathroom kitchen doorA)"));
-    // problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door kitchen bedroom doorB)"));
-    // problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door bedroom kitchen doorB)"));
-    // problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door living_room garage doorC)"));
-    // problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door garage living_room doorC)"));
-    // problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door bedroom garage doorD)"));
-    // problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door garage bedroom doorD)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(object_at towel bathroom)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door kitchen bathroom doora)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door bathroom kitchen doora)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door kitchen bedroom doorb)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door bedroom kitchen doorb)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door living_room garage doorc)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door garage living_room doorc)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door bedroom garage doord)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door garage bedroom doord)"));
 
     // Provisional
-    problem_expert_->addPredicate(plansys2::Predicate("(connected kitchen bathroom)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected bathroom kitchen)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected kitchen bedroom)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected bedroom kitchen)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected living_room garage)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected garage living_room)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected bedroom garage)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected garage bedroom)"));
+    // problem_expert_->addPredicate(plansys2::Predicate("(connected kitchen bathroom)"));
+    // problem_expert_->addPredicate(plansys2::Predicate("(connected bathroom kitchen)"));
+    // problem_expert_->addPredicate(plansys2::Predicate("(connected kitchen bedroom)"));
+    // problem_expert_->addPredicate(plansys2::Predicate("(connected bedroom kitchen)"));
+    // problem_expert_->addPredicate(plansys2::Predicate("(connected living_room garage)"));
+    // problem_expert_->addPredicate(plansys2::Predicate("(connected garage living_room)"));
+    // problem_expert_->addPredicate(plansys2::Predicate("(connected bedroom garage)"));
+    // problem_expert_->addPredicate(plansys2::Predicate("(connected garage bedroom)"));
     //----
 
     problem_expert_->addPredicate(plansys2::Predicate("(connected kitchen living_room)"));
     problem_expert_->addPredicate(plansys2::Predicate("(connected living_room kitchen)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(open doorA)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(close doorB)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(close doorC)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(close doorD)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(open doora)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(close doorb)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(close doorc)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(close doord)"));
     problem_expert_->addPredicate(plansys2::Predicate("(no_prio_task_remaining"));
     problem_expert_->addPredicate(plansys2::Predicate("(pick_request granny tools)"));
     
@@ -109,7 +109,7 @@ public:
       case STARTING:
         {
           // Set the goal for next state
-          problem_expert_->setGoal(plansys2::Goal("(and(object_at tools bedroom))"));
+          problem_expert_->setGoal(plansys2::Goal("(and(object_at clothes bedroom))"));
 
           // Compute the plan
           auto domain = domain_expert_->getDomain();
@@ -137,8 +137,14 @@ public:
             auto feedback = executor_client_->getFeedBack();
 
             for (const auto & action_feedback : feedback.action_execution_status) {
-              std::cout << "[" << action_feedback.action << " " <<
-                action_feedback.completion * 100.0 << "%]";
+              if (action_feedback.completion) {
+                std::cout << "[" << action_feedback.action << " " <<
+                "SUCCESS" << "]";
+              }
+              else {
+                std::cout << "[" << action_feedback.action << " " <<
+                "RUNNING..." << "]";
+              }
             }
             std::cout << std::endl;
 
@@ -169,7 +175,7 @@ int main(int argc, char ** argv)
 
   node->init();
 
-  rclcpp::Rate rate(5);
+  rclcpp::Rate rate(10);
   while (rclcpp::ok()) {
     node->step();
 
