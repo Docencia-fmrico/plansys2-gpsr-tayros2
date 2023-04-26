@@ -183,6 +183,23 @@ move_without_door_cmd = Node(
 ```
 -----------------------------------------------------------------------
 
+### Parameters file
+-----------------------------------------------------------------------
+config/params.yaml(snippet):
+``` yaml
+move_wod:
+  ros__parameters:
+    plugins:
+      - plansys2_move_bt_node
+    waypoints: ["living_room", "bathroom", "bedroom", "kitchen", "garage"]
+    waypoint_coords:
+      living_room: [-5.08, -4.93, 0.0]
+      bathroom: [3.92, 1.03, 0.0]
+      bedroom: [1.92, -4.97, 0.0]
+      kitchen: [-2.03, 1.06, 0.0]
+      garage: [-0.85, -10.17, 0.0]
+```
+-----------------------------------------------------------------------
 ## Controller
 
 In order to facilitate the user with the implementation of what would be the typical "problem.pddl" file and using the modularity offered by Plansys2, which allows us to use functions from the classes responsible for the operation of domain and problem processing as well as the correct functioning of the planner and executor; we have created a ros2 node as a "controller" that will be responsible for instantiating "the robot's world", indicating the goal to be achieved and ensuring proper robot operation (feedback). The logic for this node is located in the "gpsr_controller_node.cpp" file.
