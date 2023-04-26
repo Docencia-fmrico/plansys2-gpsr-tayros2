@@ -80,13 +80,10 @@ public:
     problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door bedroom kitchen doorb)"));
     problem_expert_->addPredicate(
       plansys2::Predicate(
-        "(connected_by_door living_room garage doorc)"));
+        "(connected_by_door kitchen bathroom doora)"));
     problem_expert_->addPredicate(
       plansys2::Predicate(
-        "(connected_by_door garage living_room doorc)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door bedroom garage doord)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected_by_door garage bedroom doord)"));
-
+        "(connected_by_door bathroom kitchen doora)"));
     // Provisional
     // problem_expert_->addPredicate(plansys2::Predicate("(connected kitchen bathroom)"));
     // problem_expert_->addPredicate(plansys2::Predicate("(connected bathroom kitchen)"));
