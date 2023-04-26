@@ -123,7 +123,7 @@ def generate_launch_description():
             }
         ])
 
-    #-- Only if no doors map
+    # -- Only if no doors map
     # transport_cmd = Node(
     #     package='plansys2_bt_actions',
     #     executable='bt_action_node',
